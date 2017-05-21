@@ -13,9 +13,20 @@
 #define F_CPU 11059200UL//8000000UL
 #endif
 
+/*************************************************************************/
+/*		Ring Buffer declarations
+/*************************************************************************/
+#define RING_SIZE   64
+#define BUFFER_EMPTY 0
+#define BUFFER_NOT_EMPTY 1
+typedef uint8_t ring_pos_t;
+volatile ring_pos_t ring_head;
+volatile ring_pos_t ring_tail;
+volatile char ring_data[RING_SIZE];
 
 #define USART_BAUDRATE 4800
 #define BAUD_PRESCALE (((F_CPU / (USART_BAUDRATE * 16UL))) - 1)
+/*************************************************************************/
 
 void USART_Init(void);
 void USART_SendByte(uint8_t u8Data);

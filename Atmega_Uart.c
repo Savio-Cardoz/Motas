@@ -6,7 +6,19 @@
  */
 
 #include <avr/io.h>
+#include <avr/interrupt.h>
 #include "Atmega_Uart.h"
+
+ISR(USART_RXC_vect)		// USART interrupt service routine.
+{
+	uint8_t err;
+	err = Ring_Add(UDR);
+
+	if (err = -1)
+	{
+		/* Error Handling code here. We may need to think if we need error handling for this */
+	}
+}
  
 void USART_Init(void)
 {
@@ -77,4 +89,34 @@ void USART0_Transmit_dec(unsigned int int_data)
 	USART_SendByte((dec_adc_value / 10) | 0x30);
 	dec_adc_value = temp1 % 10;
 	USART_SendByte(dec_adc_value | 0x30);
+}
+
+int Ring_Add(char c) {
+    ring_pos_t next_head = (ring_head + 1) % RING_SIZE;
+    if (next_head != ring_tail) {
+        /* there is room */
+        ring_data[ring_head] = c;
+        ring_head = next_head;
+        return 0;
+    } else {
+        /* no room left in the buffer */
+        return -1;
+    }
+}
+
+int Ring_Remove(void) {
+    if (ring_head != ring_tail) {
+        int c = ring_data[ring_tail];
+        ring_tail = (ring_tail + 1) % RING_SIZE;
+        return c;
+    } else {
+        return -1;
+    }
+}
+
+uint8_t Is_Buffer_Empty()
+{
+	if(ring_head == ring_tail)
+		return BUFFER_EMPTY;	
+	else return BUFFER_NOT_EMPTY;
 }
