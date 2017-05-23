@@ -31,9 +31,10 @@ volatile char ring_data[RING_SIZE];
 void USART_Init(void);
 void USART_SendByte(uint8_t u8Data);
 void USART_putstring(char* StringPtr);
-void Usart_Send_Array(uint8_t* arrayptr, uint8_t len);
 uint8_t USART_ReceiveByte();
-
+void USART_Transmit_dec(unsigned int int_data);
+int Ring_Add(char c);
+int Ring_Remove(void);
 
 
 

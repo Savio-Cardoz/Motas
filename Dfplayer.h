@@ -32,9 +32,21 @@
 #define CMD_RECV_NFB	0x00
 #define CMD_BUFFER_SIZE 8
 
-uint8_t cmdbuffer[CMD_BUFFER_SIZE];
+typedef struct {
+	uint8_t header;
+	uint8_t version;
+	uint8_t lenght;
+	uint8_t type;
+	uint8_t feedback;
+	uint8_t parah;
+	uint8_t paral;
+	uint8_t tail;
+} command_t;
 
-
+//uint8_t cmdbuffer[CMD_BUFFER_SIZE];
+void dfplayer_Cmd(uint8_t cmd, uint16_t parameter);
+void Dfplayer_Send(command_t* strct_ptr);
+int Ring_Add(char c);
 
 
 #endif /* DFPLAYER_H_ */

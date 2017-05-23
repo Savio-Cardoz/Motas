@@ -24,7 +24,7 @@
 #define PIR_INPUT_PIN				PIND2				
 #define USS_PORT 					PORTD
 #define USS_DIR_REG					DDRD
-#define USS_TRIGGER					PORTD4
+#define USS_TRIGGER					PD4
 #define USS_ECHO					PIND3
 
 
@@ -39,7 +39,7 @@ uint16_t pirTriggerCount, UssPulseCount;
 void Trigger_Ultrasonic_Sensor();
 void Init_Pir();
 void Init_Ultrasonic_Sensor();
-uint8_t Get_Uss_Count();
+uint16_t Get_Uss_Count();
 
 
 

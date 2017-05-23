@@ -48,23 +48,13 @@ void USART_putstring(char* StringPtr)
 	}
 }
 
-void Usart_Send_Array(uint8_t* arrayptr, uint8_t len)
-{
-	while(len)
-	{
-		USART_SendByte(*arrayptr);
-		arrayptr++;
-		--len;
-	}
-}
-
 uint8_t USART_ReceiveByte()
 {
   while(!(UCSRA & (1<<RXC)));
   return UDR;
 }
 
-void USART0_Transmit_dec(unsigned int int_data)
+void USART_Transmit_dec(unsigned int int_data)
 {
 	unsigned int temp1, temp2, dec_adc_value = 0;
 	
