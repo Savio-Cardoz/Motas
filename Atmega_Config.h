@@ -10,7 +10,7 @@
 #define ATMEGA_CONFIG_H_
 
 
-
+void Atmega_init();
 
 
 #endif /* ATMEGA_CONFIG_H_ */

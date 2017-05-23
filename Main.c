@@ -16,18 +16,11 @@
 
 int main(void)
 {
-	USART_Init();
-	USART_putstring("Serial OK!");
-	Init_Ultrasonic_Sensor();
-	
-	sei();
+	Atmega_init();
 	
 	
-	uint16_t tempp;
     while(1)
     {
-		tempp = Get_Uss_Count();
-		USART_Transmit_dec(tempp);
-		_delay_ms(5000);
+	
     }
 }

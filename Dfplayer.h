@@ -44,7 +44,7 @@ typedef struct {
 } command_t;
 
 //uint8_t cmdbuffer[CMD_BUFFER_SIZE];
-void dfplayer_Cmd(uint8_t cmd, uint16_t parameter);
+void Dfplayer_Cmd(uint8_t cmd, uint16_t parameter);
 void Dfplayer_Send(command_t* strct_ptr);
 int Ring_Add(char c);
 

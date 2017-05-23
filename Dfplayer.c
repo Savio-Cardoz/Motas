@@ -25,7 +25,7 @@ command_t command;
 	argument 2: Parameter to the command         
 	                                                            
 /************************************************************************/
-void dfplayer_Cmd(uint8_t cmd, uint16_t parameter)
+void Dfplayer_Cmd(uint8_t cmd, uint16_t parameter)
 {
 	uint8_t cmd_lenght = 0x06;			// Currently all commands that'll be used have a lenght of 6. So this is fixed
 	uint8_t tempholder = 0;

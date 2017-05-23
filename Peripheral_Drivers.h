@@ -31,7 +31,7 @@
 /*********************************************************************************************************************
 /*					Local variables
 /********************************************************************************************************************/
-uint16_t pirTriggerCount, UssPulseCount;
+uint16_t pir_trigger_count, UssPulseCount;
 
 /**********************************************************************************************************************
 /*					Function Prototypes
@@ -40,6 +40,8 @@ void Trigger_Ultrasonic_Sensor();
 void Init_Pir();
 void Init_Ultrasonic_Sensor();
 uint16_t Get_Uss_Count();
+uint16_t Get_Pir_count();
+void Reset_Pir_count();
 
 
 

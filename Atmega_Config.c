@@ -6,5 +6,14 @@
  */ 
 
 #include <avr/io.h>
+#include <avr/interrupt.h>
 #include "Atmega_Config.h"
 
+void Atmega_init()
+{
+	USART_Init();
+	USART_putstring("Serial OK!");
+	Init_Ultrasonic_Sensor();
+	Init_Pir();
+	sei();
+}

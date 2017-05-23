@@ -14,12 +14,11 @@
 
 ISR(PIR_INTERRUPT_VECT)
 {
-	pirTriggerCount++;
+	pir_trigger_count++;
 }
 
 ISR(USS_INTERRUPT_VECT)				
 {
-	USART_putstring("I_T");
 	static uint8_t UssEdgeCount = 0;
 	if (UssEdgeCount)		
 	{
@@ -48,6 +47,9 @@ void Init_Pir()
 {
 	CLEARBIT(PIR_INPUT_DIR_REG, PIR_INPUT_PIN);						// Set the pin direction as input
 	SETBIT(PIR_INPUT_PORT, PIR_INPUT_PIN);							// Setup the controllers internal Pull up resistor
+
+	MCUCR |= (1 << ISC01) | (1 << ISC00);
+	GICR |= (1 << INT0);
 }
 
 void Init_Ultrasonic_Sensor()
@@ -82,3 +84,12 @@ void Stop_Timer1()
 	TCCR1B &= ~(1 << CS10);
 }
 
+uint16_t Get_Pir_count()
+{
+	return pir_trigger_count;
+}
+
+void Reset_Pir_count()
+{
+	pir_trigger_count = 0;
+}
