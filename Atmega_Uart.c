@@ -48,6 +48,21 @@ void USART_putstring(char* StringPtr)
 	}
 }
 
+/**
+* This method is used to send debug messages on the UART
+* @author Faisal Khan
+* @param none
+* @date 29/05/2017
+*/
+void SendDebug(char * StringPtr)
+{
+	while(*StringPtr != 0x00)
+	{
+		USART_SendByte(*StringPtr);
+		StringPtr++;
+	}
+}
+
 uint8_t USART_ReceiveByte()
 {
   while(!(UCSRA & (1<<RXC)));
