@@ -9,6 +9,9 @@
 #ifndef ATMEGA_CONFIG_H_
 #define ATMEGA_CONFIG_H_
 
+//This is used to switch ON/OFF Debugging. Comment for switching the debugging mode to off.
+#define DEBUG_ON
+
 
 void Atmega_init();
 
