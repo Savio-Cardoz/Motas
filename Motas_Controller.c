@@ -9,16 +9,22 @@
 */
 
 
+/*===============================Includes=================================================*/
 #include "Atmega_Config.h"
 #include "Atmega_Uart.h"
 #include "Motas_Controller.h"
 
+/*========================================================================================*/
+
+/*===============================Global variables==========================================*/
 
 /*Initialize the state machine to the INIT_STATE*/
 static t_motascontroller_state motascontroller_state = MOTAS_INIT_STATE;
-static uint16_t threshold_Uss_Count = 0;
+static uint16_t threshold_uss_count = 0;
 /*Demo value. Can be changed or can be kept as configurable*/
 uint16_t threshold_pir_count = 4;
+
+/*========================================================================================*/
 
 /**
 * This method is the state corresponding to the Initial state of the state machine
@@ -28,7 +34,7 @@ uint16_t threshold_pir_count = 4;
 */
 void Init_State(void)
 {
-	//TODO: Implementation - Who to read if the card is empty
+	//TODO: Implementation - How to read if the card is empty
 	if(sd card is empty)
 	{
 		#ifdef DEBUG_ON
@@ -38,7 +44,7 @@ void Init_State(void)
 		motascontroller_state = MOTAS_DEBUGGING_STATE;	
 	}
 
-	/* No debugging needed */
+	/* No debugging needed. Start calibration */
 	else{
 		motascontroller_state = MOTAS_CALIBRATION_STATE;	
 	}
@@ -48,7 +54,7 @@ void Init_State(void)
 
 /**
 * This method is the state corresponding to Ultrasonic calibration state where 
-  Autocalibration of the ultrasonic is done and the value is stored in threshold_Uss_Count 
+  Autocalibration of the ultrasonic is done and the value is stored in threshold_uss_count 
 * @author Faisal Khan
 * @param none
 * @date 29/05/2017
@@ -56,7 +62,7 @@ void Init_State(void)
 void Calibration_State(void)
 {
 	/*Update the value of threshold*/
-	threshold_Uss_Count = Get_Uss_Count();
+	threshold_uss_count = Get_Uss_Count();
 	/*Reset the PIR count*/
 	Reset_Pir_count();
 	//TODO: Indicate on the LED when the LED driver is ready
@@ -80,7 +86,7 @@ void Standby_State(void)
 	standby_usscount = Get_Uss_Count(); 
 
 	/*Check if Ultrasonic has triggered for customer entering the room or pir*/
-	if((standby_usscount < threshold_Uss_Count) || (standby_pircount > 1))
+	if((standby_usscount < threshold_uss_count) || (standby_pircount > 1))
 	{
 		/*Delay of 3 seconds. Can be changed */
 		_delay_ms(3000);
@@ -108,16 +114,10 @@ void Standby_State(void)
 
 }
 
-void Processing_State(void)
-{
-
-
-}
-
 
 /**
 * This method is the state corresponding to System Active state wherein music is started or 
-  continued of already playing 
+  continued if already playing 
 * @author Faisal Khan
 * @param none
 * @date 29/05/2017
@@ -136,7 +136,7 @@ void Active_State(void)
 	/*This delay can be changed or configured*/
 	_delay_ms(3000);
 	/*Customer present in the room*/	
-	if((active_pir_count > threshold_pir_count) || (active_usscount >= threshold_Uss_Count))
+	if((active_pir_count > threshold_pir_count) || (active_usscount >= threshold_uss_count))
 	{
 		/*Do not change the state. Keep audio playing*/
 		motascontroller_state = MOTAS_ACTIVE_STATE;
@@ -157,7 +157,7 @@ void Debugging_State(void)
 }
 
 /**
-* This method is the main state machine function. This functions would be called from the main  
+* This method is the main state machine function. This function would be called from the main func  
 * @author Faisal Khan
 * @param none
 * @date 29/05/2017
@@ -178,10 +178,6 @@ void MotasController(void)
 
 		case MOTAS_STANDBY_STATE:
 			Standby_State();
-
-			break;
-
-		case MOTAS_PROCESSING_STATE:
 
 			break;
 
