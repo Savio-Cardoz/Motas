@@ -8,10 +8,7 @@
 
 #ifndef ATMEGAUART_H_
 #define ATMEGAUART_H_
-
-#ifndef F_CPU
-#define F_CPU 11059200UL//8000000UL
-#endif
+#include "Atmega_Config.h"
 
 /*************************************************************************/
 /*		Ring Buffer declarations
@@ -24,13 +21,14 @@ volatile ring_pos_t ring_head;
 volatile ring_pos_t ring_tail;
 volatile char ring_data[RING_SIZE];
 
-#define USART_BAUDRATE 4800
+#define USART_BAUDRATE 9600
 #define BAUD_PRESCALE (((F_CPU / (USART_BAUDRATE * 16UL))) - 1)
 /*************************************************************************/
 
 void USART_Init(void);
 void USART_SendByte(uint8_t u8Data);
 void USART_putstring(char* StringPtr);
+void SendDebug(char * StringPtr);
 uint8_t USART_ReceiveByte();
 void USART_Transmit_dec(unsigned int int_data);
 int Ring_Add(char c);

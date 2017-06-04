@@ -8,13 +8,11 @@
 
 #ifndef PERIPHERAL_DRIVERS_H_
 #define PERIPHERAL_DRIVERS_H_
-
-#ifndef F_CPU
-#define F_CPU 1000000UL
-#endif
+#include "Atmega_Config.h"
 
 #define SETBIT(ADDRESS,BIT) (ADDRESS |= (1<<BIT))			
 #define CLEARBIT(ADDRESS,BIT) (ADDRESS &= ~(1<<BIT))
+#define CHECKBIT(ADDRESS,BIT) (ADDRESS & (1<<BIT))	
 
 //#define PIR_INTERRUPT_VECT(number) INT##number##_vect
 #define PIR_INTERRUPT_VECT 			INT0_vect						// PIR output should be input to controller on INT0
@@ -26,7 +24,8 @@
 #define USS_DIR_REG					DDRD
 #define USS_TRIGGER					PD4
 #define USS_ECHO					PIND3
-
+#define AMBER_LED					PC1
+#define YELLOW_LED					PC0
 
 /*********************************************************************************************************************
 /*					Local variables
@@ -42,7 +41,8 @@ void Init_Ultrasonic_Sensor();
 uint16_t Get_Uss_Count();
 uint16_t Get_Pir_count();
 void Reset_Pir_count();
-
-
+uint8_t Get_Pir_status();
+void Led_On(uint8_t led_color);
+void Led_Off(uint8_t led_color);
 
 #endif /* PERIPHERAL_DRIVERS_H_ */

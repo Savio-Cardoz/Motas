@@ -8,12 +8,18 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "Atmega_Config.h"
+#include "Peripheral_Drivers.h"
 
 void Atmega_init()
 {
 	USART_Init();
-	USART_putstring("Serial OK!");
+	
+#ifdef DEBUG_ON
+	SendDebug("Serial OK!");
+#endif // DEBUG_ON
+	
 	Init_Ultrasonic_Sensor();
 	Init_Pir();
+	Init_Timer1();
 	sei();
 }

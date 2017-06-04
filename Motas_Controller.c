@@ -10,6 +10,8 @@
 
 
 /*===============================Includes=================================================*/
+#include <avr/io.h>
+#include <util/delay.h>
 #include "Atmega_Config.h"
 #include "Atmega_Uart.h"
 #include "Motas_Controller.h"
@@ -35,10 +37,10 @@ uint16_t threshold_pir_count = 4;
 void Init_State(void)
 {
 	//TODO: Implementation - How to read if the card is empty
-	if(sd card is empty)
+	if(/*sd card is empty*/ 1)
 	{
 		#ifdef DEBUG_ON
-		SendDebug("Motas entering Debugging state")
+		SendDebug("Motas entering Debugging state");
 		#endif
 
 		motascontroller_state = MOTAS_DEBUGGING_STATE;	
@@ -62,6 +64,7 @@ void Init_State(void)
 void Calibration_State(void)
 {
 	/*Update the value of threshold*/
+	
 	threshold_uss_count = Get_Uss_Count();
 	/*Reset the PIR count*/
 	Reset_Pir_count();

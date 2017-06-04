@@ -10,8 +10,8 @@
 #define ATMEGA_CONFIG_H_
 
 //This is used to switch ON/OFF Debugging. Comment for switching the debugging mode to off.
-#define DEBUG_ON
-
+//#define DEBUG_ON
+#define F_CPU 8000000UL
 
 void Atmega_init();
 

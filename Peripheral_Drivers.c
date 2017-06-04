@@ -4,9 +4,7 @@
  * Created: 5/17/2017 10:57:21 PM
  *  Author: Cardoz
  */ 
-
-#define F_CPU 11059200UL
-
+#include "Atmega_Config.h"
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
@@ -62,10 +60,35 @@ void Init_Ultrasonic_Sensor()
 	GICR |= (1 << INT1);
 }
 
+void Init_Led()
+{
+	SETBIT(DDRC, PC0);
+	SETBIT(DDRC, PC1);
+	CLEARBIT(PORTC, PC0);
+	CLEARBIT(PORTC, PC1);	
+}
+
+void Led_On(uint8_t led_color)
+{
+	SETBIT(PORTC, led_color);
+}
+
+void Led_Off(uint8_t led_color)
+{
+	CLEARBIT(PORTC, led_color);
+}
+
 uint16_t Get_Uss_Count()
 {
 	Trigger_Ultrasonic_Sensor();
 	_delay_ms(1000);
+	#ifdef DEBUG_ON
+	SendDebug("USS Triggered");
+	SendDebug("USS count:");
+	USART_Transmit_dec(UssPulseCount);
+	USART_SendByte(0x0D);
+	USART_SendByte(0x0A);
+	#endif
 	return UssPulseCount;
 }
 
@@ -76,7 +99,7 @@ void Init_Timer1()
 
 void Start_Timer1()
 {
-	TCCR1B |= (1 << CS10);		// No prescalar
+	TCCR1B |= (1 << CS10);		// No pre-scalar
 }
 
 void Stop_Timer1()
@@ -93,3 +116,27 @@ void Reset_Pir_count()
 {
 	pir_trigger_count = 0;
 }
+
+/*
+ *	Return the digital level of the pin connected to the PIR output
+ *	return 1 - if PIR is being triggered
+ *	return 0 - No motion is detected by the PIR.
+*/ 
+uint8_t Get_Pir_status()
+{
+	if(CHECKBIT(PIND, PIR_INPUT_PIN))
+	{
+		#ifdef DEBUG_ON
+		SendDebug("Motion active");
+		#endif
+		
+		return 1;
+	}
+	#ifdef DEBUG_ON
+	SendDebug("No Motion");
+	#endif
+	
+	return 0;
+}
+
+

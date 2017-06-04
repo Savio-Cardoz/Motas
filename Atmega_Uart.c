@@ -39,14 +39,14 @@ void USART_SendByte(uint8_t u8Data)
   UDR = u8Data;
 }
 
-void USART_putstring(char* StringPtr)
-{
-	while(*StringPtr != 0x00)
-	{
-		USART_SendByte(*StringPtr);
-		StringPtr++;
-	}
-}
+//void USART_putstring(char* StringPtr)
+//{
+	//while(*StringPtr != 0x00)
+	//{
+		//USART_SendByte(*StringPtr);
+		//StringPtr++;
+	//}
+//}
 
 /**
 * This method is used to send debug messages on the UART
@@ -61,6 +61,8 @@ void SendDebug(char * StringPtr)
 		USART_SendByte(*StringPtr);
 		StringPtr++;
 	}
+	USART_SendByte(0x0D);
+	USART_SendByte(0x0A);
 }
 
 uint8_t USART_ReceiveByte()
