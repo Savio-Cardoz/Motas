@@ -16,11 +16,14 @@
 
 int main(void)
 {
+	/*Initialize the Project*/
 	Atmega_init();
-	
-	
+		
     while(1)
     {
-	
+    	//Implement some delay if required
+
+    	/*Call the main function of the state machine */
+		MotasController();
     }
 }
