@@ -13,11 +13,18 @@
 #include "Atmega_Config.h"
 
 
-/*========================================================================================*/
-#define False	0
-#define True	1
+/*===============================Macros====================================================*/
 
-typedef struct			// Using to access individual bits/pins of a register/port
+#define False	0(uin8_t)
+#define True	1(uin8_t)
+
+
+#define REGISTER_BIT(rg,bt) ((volatile _io_reg*)&rg)->bit##bt
+
+/*===============================Global Data types==========================================*/
+
+/* Using to access individual bits/pins of a register/port */
+typedef struct			
 {
 	unsigned int bit0:1;
 	unsigned int bit1:1;
@@ -29,15 +36,7 @@ typedef struct			// Using to access individual bits/pins of a register/port
 	unsigned int bit7:1;
 } _io_reg;
 
-#define REGISTER_BIT(rg,bt) ((volatile _io_reg*)&rg)->bit##bt
-
-
-/**
-* enum for states of the state machine.   
-* @author Faisal Khan
-* @param none
-* @date 29/05/2017
-*/
+/* enum for states of the state machine */
 typedef enum 
 {
 	MOTAS_INIT_STATE = 0,
@@ -46,6 +45,8 @@ typedef enum
 	MOTAS_ACTIVE_STATE = 3,
 	MOTAS_DEBUGGING_STATE = 4,
 }t_motascontroller_state;
+
+/*===============================Function Declarations=================================================*/
 
 /**
 * This method is the state corresponding to the Initial state of the state machine
