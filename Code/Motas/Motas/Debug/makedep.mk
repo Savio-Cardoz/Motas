@@ -6,6 +6,8 @@ Atmega_Config.c
 
 Atmega_Uart.c
 
+debug_func.c
+
 Dfplayer.c
 
 Main.c

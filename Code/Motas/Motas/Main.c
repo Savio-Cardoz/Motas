@@ -9,13 +9,16 @@
 /*
  *	Using the factory default internal RC oscillator
 */ 
-#include "Atmega_Config.h"
+
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include "Atmega_Uart.h"
 #include "Dfplayer.h"
 #include "Peripheral_Drivers.h"
+#include "Atmega_Config.h"
+#include "Motas_Controller.h"
+
 
 
 int main(void)
@@ -24,15 +27,6 @@ int main(void)
 	
     while(1)
     {
-		
-		_delay_ms(1000);
-		
-		Dfplayer_Cmd(CMD_PLY_TRCK, 1);
-		_delay_ms(100000);
-		
-		RELAY_ON;
-		_delay_ms(3000);
-		RELAY_OFF;
-		_delay_ms(3000);
+		MotasController();
     }
 }

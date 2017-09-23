@@ -9,6 +9,8 @@
 */
 
 /*===============================Includes=================================================*/
+#include <avr/io.h>
+#include <util/delay.h>
 #include "Atmega_Config.h"
 #include "Atmega_Uart.h"
 #include "Motas_Controller.h"
@@ -48,7 +50,7 @@ uint16_t threshold_pir_count = 4;
 void Init_State(void)
 {
 	//TODO: extern this flag. Please do not change the name
-	if(TRUE == flag_sd_card_empty_g)
+	if(True == flag_sd_card_empty_g)
 	{
 		#ifdef DEBUG_ON
 			SendDebug("Motas entering Debugging state");

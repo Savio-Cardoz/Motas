@@ -5,6 +5,7 @@
  *  Author: Cardoz
  */ 
 
+#include <avr/io.h>
 #include "debug_func.h"
 
 void DebugLedInit()

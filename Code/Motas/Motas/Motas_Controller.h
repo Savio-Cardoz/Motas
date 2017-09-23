@@ -10,31 +10,10 @@
 
 
 /*===============================Includes=================================================*/
+#include <avr/io.h>
 #include "Atmega_Config.h"
 
-
-/*===============================Macros====================================================*/
-
-#define False	0(uin8_t)
-#define True	1(uin8_t)
-
-
-#define REGISTER_BIT(rg,bt) ((volatile _io_reg*)&rg)->bit##bt
-
 /*===============================Global Data types==========================================*/
-
-/* Using to access individual bits/pins of a register/port */
-typedef struct			
-{
-	unsigned int bit0:1;
-	unsigned int bit1:1;
-	unsigned int bit2:1;
-	unsigned int bit3:1;
-	unsigned int bit4:1;
-	unsigned int bit5:1;
-	unsigned int bit6:1;
-	unsigned int bit7:1;
-} _io_reg;
 
 /* enum for states of the state machine */
 typedef enum 
@@ -45,6 +24,14 @@ typedef enum
 	MOTAS_ACTIVE_STATE = 3,
 	MOTAS_DEBUGGING_STATE = 4,
 }t_motascontroller_state;
+
+/*===============================Macros====================================================*/
+
+#define False	0
+#define True	1
+
+
+#define REGISTER_BIT(rg,bt) ((volatile _io_reg*)&rg)->bit##bt
 
 /*===============================Function Declarations=================================================*/
 

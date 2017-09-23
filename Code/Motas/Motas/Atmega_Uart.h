@@ -8,6 +8,8 @@
 
 #ifndef ATMEGAUART_H_
 #define ATMEGAUART_H_
+
+#include <avr/io.h>
 #include "Atmega_Config.h"
 
 /*************************************************************************

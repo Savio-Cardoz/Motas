@@ -24,8 +24,6 @@
 #define USS_DIR_REG					DDRD
 #define USS_TRIGGER					4
 #define USS_ECHO					PIND3
-#define AMBER_LED					1
-#define YELLOW_LED					0
 #define RELAY_PIN					0
 #define RELAY_PORT					PORTB
 #define RELAY_PORT_DIR_REG			DDRB
