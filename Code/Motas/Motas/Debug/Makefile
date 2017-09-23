@@ -42,8 +42,7 @@ C_SRCS +=  \
 ../Dfplayer.c \
 ../Main.c \
 ../Motas_Controller.c \
-../Peripheral_Drivers.c \
-../softuart.c
+../Peripheral_Drivers.c
 
 
 PREPROCESSING_SRCS += 
@@ -58,8 +57,7 @@ Atmega_Uart.o \
 Dfplayer.o \
 Main.o \
 Motas_Controller.o \
-Peripheral_Drivers.o \
-softuart.o
+Peripheral_Drivers.o
 
 OBJS_AS_ARGS +=  \
 Atmega_Config.o \
@@ -67,8 +65,7 @@ Atmega_Uart.o \
 Dfplayer.o \
 Main.o \
 Motas_Controller.o \
-Peripheral_Drivers.o \
-softuart.o
+Peripheral_Drivers.o
 
 C_DEPS +=  \
 Atmega_Config.d \
@@ -76,8 +73,7 @@ Atmega_Uart.d \
 Dfplayer.d \
 Main.d \
 Motas_Controller.d \
-Peripheral_Drivers.d \
-softuart.d
+Peripheral_Drivers.d
 
 C_DEPS_AS_ARGS +=  \
 Atmega_Config.d \
@@ -85,8 +81,7 @@ Atmega_Uart.d \
 Dfplayer.d \
 Main.d \
 Motas_Controller.d \
-Peripheral_Drivers.d \
-softuart.d
+Peripheral_Drivers.d
 
 OUTPUT_FILE_PATH +=Motas.elf
 
@@ -102,8 +97,6 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
-
-
 
 
 

@@ -14,5 +14,3 @@ Motas_Controller.c
 
 Peripheral_Drivers.c
 
-softuart.c
-
