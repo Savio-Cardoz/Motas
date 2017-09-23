@@ -9,6 +9,7 @@
 #include <avr/interrupt.h>
 #include "Atmega_Config.h"
 #include "Peripheral_Drivers.h"
+#include "debug_func.h"
 
 void Atmega_init()
 {
