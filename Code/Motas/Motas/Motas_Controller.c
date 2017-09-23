@@ -16,8 +16,11 @@
 
 /*========================================================================================*/
 
-uint8_t flag_register;			// All required flags should be taken from this variable (8 per variable)
-#define flag_sd_card_empty_g REGISTER_BIT(flag_register, 0)
+/* All required flags in the application layer are present in this variable (8 per variable) */
+uint8_t flag_register_controller;			
+
+/* Flag to indicate if the sd card is empty */
+#define flag_sd_card_empty_g REGISTER_BIT(flag_register_controller, 0)
 
 /*===============================Global variables==========================================*/
 
@@ -29,10 +32,6 @@ static uint16_t threshold_uss_count = 0;
 static uint16_t debug_threshold_uss_count = 0;
 /*Demo value. Can be changed or can be kept as configurable*/
 uint16_t threshold_pir_count = 4;
-
-/* Flag to indicate if the sd card is empty */
-//TODO: Please extern this is the driver file and change status
-flag_sd_card_empty_g = False;
 
 /*========================================================================================*/
 
@@ -48,7 +47,7 @@ void Init_State(void)
 	if(TRUE == flag_sd_card_empty_g)
 	{
 		#ifdef DEBUG_ON
-			SendDebug("Motas entering Debugging state")
+			SendDebug("Motas entering Debugging state");
 		#endif
 
 		motascontroller_state = MOTAS_DEBUGGING_STATE;	
@@ -173,8 +172,9 @@ void Debugging_State(void)
 	uint16_t uss_count = 0;
 
 	/* Yellow led light indicating start of Debugging mode */
-	DebugLedTransmit(LED_ON ,LED_YELLOW)
-
+	DebugLedTransmit(LED_ON ,LED_YELLOW);
+	_delay_ms(2000);
+	
 	/* Get the pir count */
 	Reset_Pir_count();
 	pir_count = Get_Pir_count();
@@ -186,13 +186,16 @@ void Debugging_State(void)
 	if(pir_count > 1)
 	{
 		/* Red led light indicating pir triggered */
-		DebugLedTransmit(LED_ON, LED_RED)
+		DebugLedTransmit(LED_ON, LED_RED);
+		_delay_ms(2000);
+		
 	}
 	/* Check if USS is triggered */
-	else if(uss_count > debug_threshold_uss_count)
+	else if(uss_count > debug_threshold_uss_count);
 	{
 		/* Orange led light indicating uss triggered */
-		DebugLedTransmit(LED_ON, LED_ORANGE)
+		DebugLedTransmit(LED_ON, LED_ORANGE);
+		_delay_ms(2000);
 	}
 }
 
