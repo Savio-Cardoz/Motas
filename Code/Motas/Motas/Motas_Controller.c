@@ -16,6 +16,9 @@
 
 /*========================================================================================*/
 
+uint8_t flag_register;			// All required flags should be taken from this variable (8 per variable)
+#define flag_sd_card_empty_g REGISTER_BIT(flag_register, 0)
+
 /*===============================Global variables==========================================*/
 
 /*Initialize the state machine to the INIT_STATE*/
@@ -29,7 +32,7 @@ uint16_t threshold_pir_count = 4;
 
 /* Flag to indicate if the sd card is empty */
 //TODO: Please extern this is the driver file and change status
-BOOL flag_sd_card_empty_g = False;
+flag_sd_card_empty_g = False;
 
 /*========================================================================================*/
 

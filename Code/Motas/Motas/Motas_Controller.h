@@ -10,10 +10,27 @@
 
 
 /*===============================Includes=================================================*/
-
+#include "Atmega_Config.h"
 
 
 /*========================================================================================*/
+#define False	0
+#define True	1
+
+typedef struct			// Using to access individual bits/pins of a register/port
+{
+	unsigned int bit0:1;
+	unsigned int bit1:1;
+	unsigned int bit2:1;
+	unsigned int bit3:1;
+	unsigned int bit4:1;
+	unsigned int bit5:1;
+	unsigned int bit6:1;
+	unsigned int bit7:1;
+} _io_reg;
+
+#define REGISTER_BIT(rg,bt) ((volatile _io_reg*)&rg)->bit##bt
+
 
 /**
 * enum for states of the state machine.   

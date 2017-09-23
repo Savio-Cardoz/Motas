@@ -130,12 +130,6 @@
     <Compile Include="Peripheral_Drivers.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="softuart.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="softuart.h">
-      <SubType>compile</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Makefile">

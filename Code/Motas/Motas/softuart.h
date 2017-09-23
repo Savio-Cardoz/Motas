@@ -56,8 +56,8 @@
     #define SOFTUART_TXDDR   DDRC
     #define SOFTUART_TXBIT   PC4
 
-    #define SOFTUART_T_COMP_LABEL      TIM0_COMPA_vect
-    #define SOFTUART_T_COMP_REG        OCR0A
+    #define SOFTUART_T_COMP_LABEL      TIM2
+    #define SOFTUART_T_COMP_REG        OCR01
     #define SOFTUART_T_CONTR_REGA      TCCR0A
     #define SOFTUART_T_CONTR_REGB      TCCR0B
     #define SOFTUART_T_CNT_REG         TCNT0
