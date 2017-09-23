@@ -10,9 +10,9 @@
 #define ATMEGAUART_H_
 #include "Atmega_Config.h"
 
-/*************************************************************************/
-/*		Ring Buffer declarations
-/*************************************************************************/
+/*************************************************************************
+*		Ring Buffer declarations
+*************************************************************************/
 #define RING_SIZE   64
 #define BUFFER_EMPTY 0
 #define BUFFER_NOT_EMPTY 1
@@ -22,7 +22,7 @@ volatile ring_pos_t ring_tail;
 volatile char ring_data[RING_SIZE];
 
 #define USART_BAUDRATE 9600
-#define BAUD_PRESCALE (((F_CPU / (USART_BAUDRATE * 16UL))) - 1)
+#define BAUD_PRESCALE (((F_CPU / (USART_BAUDRATE * 8UL))) - 1)
 /*************************************************************************/
 
 void USART_Init(void);

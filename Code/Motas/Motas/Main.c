@@ -24,21 +24,15 @@ int main(void)
 	
     while(1)
     {
-		Led_On(AMBER_LED);
-		_delay_ms(1000);
-		Led_On(YELLOW_LED);
-		Get_Pir_status();
-		
-		
-		Get_Uss_Count();
 		
 		_delay_ms(1000);
-		Led_Off(AMBER_LED);
-		_delay_ms(1000);
-		Led_Off(YELLOW_LED);
 		
 		Dfplayer_Cmd(CMD_PLY_TRCK, 1);
 		_delay_ms(100000);
 		
+		RELAY_ON;
+		_delay_ms(3000);
+		RELAY_OFF;
+		_delay_ms(3000);
     }
 }

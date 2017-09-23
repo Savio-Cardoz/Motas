@@ -18,13 +18,13 @@
 
 command_t command;
 
-/************************************************************************/
-/*		Function to send a command to the DFplayer
+/************************************************************************
+*		Function to send a command to the DFplayer
 	
 	argument 1: Type of command. Refer Dfplayer.h for command name definitions
 	argument 2: Parameter to the command         
 	                                                            
-/************************************************************************/
+************************************************************************/
 void Dfplayer_Cmd(uint8_t cmd, uint16_t parameter)
 {
 	uint8_t cmd_lenght = 0x06;			// Currently all commands that'll be used have a lenght of 6. So this is fixed
@@ -42,9 +42,9 @@ void Dfplayer_Cmd(uint8_t cmd, uint16_t parameter)
 	
 	Dfplayer_Send(&command);
 
-/*************************************************************************/
-/*  If Commands are query based, a immediate response will be received
-/*************************************************************************/
+/*************************************************************************
+*  If Commands are query based, a immediate response will be received
+*************************************************************************/
 	_delay_ms(10);
 	if(Is_Buffer_Empty() == BUFFER_NOT_EMPTY)
 	{

@@ -27,7 +27,8 @@ void USART_Init(void)
 	 /* Load upper 8-bits into the high byte of the UBRR register
     Default frame format is 8 data bits, no parity, 1 stop bit
   to change use UCSRC, see AVR datasheet*/ 
-
+	
+	UCSRA |= (1 << U2X);
   // Enable receiver and transmitter and receive complete interrupt 
   UCSRB = ((1<<TXEN)|(1<<RXEN) | (1<<RXCIE));
 }

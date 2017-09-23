@@ -139,4 +139,10 @@ uint8_t Get_Pir_status()
 	return 0;
 }
 
+void Init_Gpio()
+{
+	RELAY_PORT_DIR_REG |= (1 << RELAY_PIN);		// Set the relay pin as a output pin
+	RELAY_PORT &= ~(1 << RELAY_PIN);			// Initialise relay in OFF state.
+}
+
 

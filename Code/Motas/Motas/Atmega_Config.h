@@ -11,7 +11,9 @@
 
 //This is used to switch ON/OFF Debugging. Comment for switching the debugging mode to off.
 //#define DEBUG_ON
-#define F_CPU 8000000UL
+#ifndef F_CPU
+#define F_CPU 1000000UL
+#endif
 
 void Atmega_init();
 

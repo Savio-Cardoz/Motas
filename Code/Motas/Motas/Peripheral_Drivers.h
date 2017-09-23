@@ -22,19 +22,25 @@
 #define PIR_INPUT_PIN				PIND2				
 #define USS_PORT 					PORTD
 #define USS_DIR_REG					DDRD
-#define USS_TRIGGER					PD4
+#define USS_TRIGGER					4
 #define USS_ECHO					PIND3
-#define AMBER_LED					PC1
-#define YELLOW_LED					PC0
+#define AMBER_LED					1
+#define YELLOW_LED					0
+#define RELAY_PIN					0
+#define RELAY_PORT					PORTB
+#define RELAY_PORT_DIR_REG			DDRB
+
+#define RELAY_ON					(RELAY_PORT |= (1 << RELAY_PIN))
+#define RELAY_OFF					(RELAY_PORT &= ~(1 << RELAY_PIN))
 
 /*********************************************************************************************************************
-/*					Local variables
-/********************************************************************************************************************/
+*					Local variables
+********************************************************************************************************************/
 uint16_t pir_trigger_count, UssPulseCount;
 
 /**********************************************************************************************************************
-/*					Function Prototypes
-/*********************************************************************************************************************/
+*					Function Prototypes
+*********************************************************************************************************************/
 void Trigger_Ultrasonic_Sensor();
 void Init_Pir();
 void Init_Ultrasonic_Sensor();
@@ -44,5 +50,8 @@ void Reset_Pir_count();
 uint8_t Get_Pir_status();
 void Led_On(uint8_t led_color);
 void Led_Off(uint8_t led_color);
+void Init_Gpio();
+void Stop_Timer1();
+void Start_Timer1();
 
 #endif /* PERIPHERAL_DRIVERS_H_ */
