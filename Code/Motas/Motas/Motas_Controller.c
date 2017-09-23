@@ -10,8 +10,6 @@
 
 
 /*===============================Includes=================================================*/
-#include <avr/io.h>
-#include <util/delay.h>
 #include "Atmega_Config.h"
 #include "Atmega_Uart.h"
 #include "Motas_Controller.h"
@@ -23,8 +21,15 @@
 /*Initialize the state machine to the INIT_STATE*/
 static t_motascontroller_state motascontroller_state = MOTAS_INIT_STATE;
 static uint16_t threshold_uss_count = 0;
+
+/* threshold uss count can be set different than normal. Delete if not required */
+static uint16_t debug_threshold_uss_count = 0;
 /*Demo value. Can be changed or can be kept as configurable*/
 uint16_t threshold_pir_count = 4;
+
+/* Flag to indicate if the sd card is empty */
+//TODO: Please extern this is the driver file and change status
+BOOL flag_sd_card_empty_g = False;
 
 /*========================================================================================*/
 
@@ -36,21 +41,21 @@ uint16_t threshold_pir_count = 4;
 */
 void Init_State(void)
 {
-	//TODO: Implementation - How to read if the card is empty
-	if(/*sd card is empty*/ 1)
+	//TODO: extern this flag. Please do not change the name
+	if(TRUE == flag_sd_card_empty_g)
 	{
 		#ifdef DEBUG_ON
-		SendDebug("Motas entering Debugging state");
+			SendDebug("Motas entering Debugging state")
 		#endif
 
 		motascontroller_state = MOTAS_DEBUGGING_STATE;	
 	}
 
-	/* No debugging needed. Start calibration */
-	else{
+	//TODO: Check if any additional condition is required for this transition
+	/* No debugging required. Start calibration */
+	else{	
 		motascontroller_state = MOTAS_CALIBRATION_STATE;	
 	}
-
 }
 
 
@@ -64,7 +69,6 @@ void Init_State(void)
 void Calibration_State(void)
 {
 	/*Update the value of threshold*/
-	
 	threshold_uss_count = Get_Uss_Count();
 	/*Reset the PIR count*/
 	Reset_Pir_count();
@@ -153,10 +157,40 @@ void Active_State(void)
 	}
 }
 
+/**
+* This method is for the debugging state. Check if sensors are working as required.
+* Note that no state would be changed after this
+* @author Faisal Khan
+* @param none
+* @date 29/05/2017
+*/
 void Debugging_State(void)
 {
+	uint16_t pir_count = 0;
+	uint16_t uss_count = 0;
 
+	/* Yellow led light indicating start of Debugging mode */
+	DebugLedTransmit(LED_ON ,LED_YELLOW)
 
+	/* Get the pir count */
+	Reset_Pir_count();
+	pir_count = Get_Pir_count();
+
+	/* Get the USS count */
+	uss_count = Get_Uss_Count();
+
+	/* Check if pir is triggered */
+	if(pir_count > 1)
+	{
+		/* Red led light indicating pir triggered */
+		DebugLedTransmit(LED_ON, LED_RED)
+	}
+	/* Check if USS is triggered */
+	else if(uss_count > debug_threshold_uss_count)
+	{
+		/* Orange led light indicating uss triggered */
+		DebugLedTransmit(LED_ON, LED_ORANGE)
+	}
 }
 
 /**
