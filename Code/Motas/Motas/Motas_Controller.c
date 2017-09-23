@@ -13,7 +13,7 @@
 #include "Atmega_Config.h"
 #include "Atmega_Uart.h"
 #include "Motas_Controller.h"
-#include "debug_func.h/"
+#include "debug_func.h"
 
 /*========================================================================================*/
 
