@@ -53,7 +53,7 @@ void Init_State(void)
 	if(True == flag_sd_card_empty_g)
 	{
 		#ifdef DEBUG_ON
-			SendDebug("Motas entering Debugging state");
+			//TODO: Add a LED colour for information
 		#endif
 
 		motascontroller_state = MOTAS_DEBUGGING_STATE;	

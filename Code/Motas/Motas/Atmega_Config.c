@@ -23,5 +23,6 @@ void Atmega_init()
 	Init_Pir();
 	Init_Timer1();
 	Init_Gpio();
+	DebugLedInit();
 	sei();
 }

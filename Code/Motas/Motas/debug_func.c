@@ -17,6 +17,16 @@ void DebugLedInit()
 	YELLOW_LED_PORT &= ~(1 << YELLOW_LED);
 }
 
+
+/*
+		To control a LED on the external GPIO for debugging
+		param led_state :	LED_ON	selected colour light will glow
+							LED_OFF	light wil switch off
+							
+		param led_colour:	LED_RED
+							LED_YELLOW
+							LED_ORANGE
+*/
 void DebugLedTransmit(debug_led_state_t led_state, debug_led_colour_t led_colour)
 {
 	if(led_state == LED_ON)

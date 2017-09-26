@@ -30,9 +30,6 @@ typedef enum
 #define False	0
 #define True	1
 
-
-#define REGISTER_BIT(rg,bt) ((volatile _io_reg*)&rg)->bit##bt
-
 /*===============================Function Declarations=================================================*/
 
 /**

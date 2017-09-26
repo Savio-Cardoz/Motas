@@ -9,6 +9,7 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include "Peripheral_Drivers.h"
+#include "debug_func.h"
 
 ISR(PIR_INTERRUPT_VECT)
 {
@@ -20,6 +21,7 @@ ISR(USS_INTERRUPT_VECT)
 	static uint8_t UssEdgeCount = 0;
 	if (UssEdgeCount)		
 	{
+		DebugLedTransmit(LED_ON, LED_YELLOW);
 		Stop_Timer1();
 		UssPulseCount = TCNT1;		// Store the time duration of the echo pulse.
 		TCNT1 = 0;
@@ -28,6 +30,7 @@ ISR(USS_INTERRUPT_VECT)
 	}
 	else 
 	{
+		DebugLedTransmit(LED_ON, LED_RED);
 		Start_Timer1();
 		UssEdgeCount = 1;
 		MCUCR &= ~(1 << ISC10);										// falling edge for INT0 enabled
