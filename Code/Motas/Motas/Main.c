@@ -25,14 +25,7 @@
 int main(void)
 {
 	Atmega_init();
-	
-	
-	DebugLedTransmit(LED_ON, LED_RED);
-	_delay_ms(1000);
-	DebugLedTransmit(LED_ON, LED_YELLOW);
-	_delay_ms(1000);
-	DebugLedTransmit(LED_OFF, LED_ORANGE);
-	_delay_ms(2000);
+	SendDebug("initizd");
 	
     while(1)
     {

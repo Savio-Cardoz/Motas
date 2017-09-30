@@ -78,16 +78,27 @@ void Calibration_State(void)
 {
 	/* Update the value of threshold*/
 	threshold_uss_count = Get_Uss_Count();
+	
+	#if DEBUG_ON
+	SendDebug("USS calib");
+	USART_Transmit_dec(threshold_uss_count);
+	#endif
 	/* Reset the PIR count*/
 	Reset_Pir_count();
 	
+	#if DEBUG_ON
 	/* Red led light for 1 second indicating calibration done and Motas entering the standy state */
 	DebugLedTransmit(LED_ON ,LED_RED);
 	_delay_ms(1000);
 	DebugLedTransmit(LED_OFF ,LED_RED);		/* Switch OFF the LED */
+	#endif
 	
 	/* Update state */
 	motascontroller_state = MOTAS_STANDBY_STATE;
+	
+	#if DEBUG_ON
+	SendDebug("calib done");
+	#endif
 }
 
 /**

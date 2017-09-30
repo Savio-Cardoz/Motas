@@ -15,15 +15,19 @@
 #define CHECKBIT(ADDRESS,BIT) (ADDRESS & (1<<BIT))	
 
 //#define PIR_INTERRUPT_VECT(number) INT##number##_vect
-#define PIR_INTERRUPT_VECT 			INT0_vect						// PIR output should be input to controller on INT0
-#define USS_INTERRUPT_VECT			INT1_vect
+#define PIR_INTERRUPT_VECT 			INT1_vect						// PIR output should be input to controller on INT0
+#define USS_INTERRUPT_VECT			INT0_vect
 #define PIR_INPUT_PORT				PORTD
 #define PIR_INPUT_DIR_REG			DDRD
-#define PIR_INPUT_PIN				PIND2				
-#define USS_PORT 					PORTD
-#define USS_DIR_REG					DDRD
-#define USS_TRIGGER					4
-#define USS_ECHO					PIND3
+#define PIR_INPUT_PIN				PIND3				
+
+#define USS_TRIGGER_PIN				1
+#define USS_TRIGGER_PORT			PORTB
+#define USS_TRIGGER_DIR_REG			DDRB
+#define USS_ECHO_PIN				PIND2
+#define USS_ECHO_PORT				PORTD
+#define USS_ECHO_DIR_REG			DDRD
+
 #define RELAY_PIN					0
 #define RELAY_PORT					PORTB
 #define RELAY_PORT_DIR_REG			DDRB

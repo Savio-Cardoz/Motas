@@ -21,27 +21,26 @@ ISR(USS_INTERRUPT_VECT)
 	static uint8_t UssEdgeCount = 0;
 	if (UssEdgeCount)		
 	{
-		DebugLedTransmit(LED_ON, LED_YELLOW);
 		Stop_Timer1();
 		UssPulseCount = TCNT1;		// Store the time duration of the echo pulse.
 		TCNT1 = 0;
 		UssEdgeCount = 0;
-		MCUCR |= (1 << ISC10);												// Rising edge will trigger the next interrupt
+		MCUCR |= (1 << ISC01) | (1 << ISC00);												// Rising edge will trigger the next interrupt
 	}
 	else 
 	{
-		DebugLedTransmit(LED_ON, LED_RED);
 		Start_Timer1();
 		UssEdgeCount = 1;
-		MCUCR &= ~(1 << ISC10);										// falling edge for INT0 enabled
+		MCUCR &= ~(1 << ISC00);										// falling edge for INT0 enabled
+		MCUCR |= (1 << ISC01);
 	}
 }
 
 void Trigger_Ultrasonic_Sensor()									// Function tested for 10us trigger 
 {
-	SETBIT(USS_PORT, USS_TRIGGER);
+	SETBIT(USS_TRIGGER_PORT, USS_TRIGGER_PIN);
 	_delay_us(10);													// 10us Pulse as per datasheet of HC-SR04 Ultrasonic Sensor
-	CLEARBIT(USS_PORT, USS_TRIGGER);
+	CLEARBIT(USS_TRIGGER_PORT, USS_TRIGGER_PIN);
 }
 
 void Init_Pir()
@@ -49,18 +48,21 @@ void Init_Pir()
 	CLEARBIT(PIR_INPUT_DIR_REG, PIR_INPUT_PIN);						// Set the pin direction as input
 	SETBIT(PIR_INPUT_PORT, PIR_INPUT_PIN);							// Setup the controllers internal Pull up resistor
 
-	MCUCR |= (1 << ISC01) | (1 << ISC00);
-	GICR |= (1 << INT0);
+	MCUCR |= (1 << ISC11) | (1 << ISC10);
+	GICR |= (1 << INT1);
 }
 
 void Init_Ultrasonic_Sensor()
 {
-	SETBIT(USS_DIR_REG, USS_TRIGGER);								// Set the pin direction as output
-	CLEARBIT(USS_PORT, USS_TRIGGER);								// Initial state of trigger is LOW
-	SETBIT(USS_PORT, USS_ECHO);										// Activate pull-up on ECHO pin.
+	USS_TRIGGER_DIR_REG |= (1 << USS_TRIGGER_PIN);					// Set the pin direction as output
+	USS_TRIGGER_PORT &= ~(1 << USS_TRIGGER_PIN);					// Initial state of trigger is LOW
 	
-	MCUCR |= (1 << ISC11) | (1 << ISC10);							// Set the interrupt to trigger at the rising edge.
-	GICR |= (1 << INT1);
+	USS_ECHO_DIR_REG &= ~(1 << USS_ECHO_PIN);						// ECHO pin is set a s input
+	USS_ECHO_PORT |= (1 << USS_ECHO_PIN);							// Keep ECHO pin pulled up
+	
+	/* Setup rising edge interrupt on the echo pin	*/	
+	MCUCR |= (1 << ISC01) | (1 << ISC00);							// Set the interrupt to trigger at the rising edge.
+	GICR |= (1 << INT0);
 }
 
 void Init_Led()
@@ -112,6 +114,10 @@ void Stop_Timer1()
 
 uint16_t Get_Pir_count()
 {
+	#if DEBUG_ON
+	SendDebug("PIR@");
+	USART_Transmit_dec(pir_trigger_count);
+	#endif
 	return pir_trigger_count;
 }
 
