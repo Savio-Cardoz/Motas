@@ -25,7 +25,6 @@
 int main(void)
 {
 	Atmega_init();
-	SendDebug("initizd");
 	
     while(1)
     {

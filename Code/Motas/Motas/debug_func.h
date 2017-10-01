@@ -10,7 +10,7 @@
 
 #include <avr/io.h> 
 
-#define DEBUG_ON			1
+#define DEBUG_ON			0
 #define RED_LED				PC0
 #define YELLOW_LED			PC1
 #define RED_LED_PORT		PORTC

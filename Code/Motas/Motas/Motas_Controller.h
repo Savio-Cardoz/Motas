@@ -13,6 +13,7 @@
 #include <avr/io.h>
 #include "Atmega_Config.h"
 
+
 /*===============================Global Data types==========================================*/
 
 /* enum for states of the state machine */

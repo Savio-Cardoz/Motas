@@ -78,7 +78,6 @@
   <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
   <avrgcc.compiler.symbols.DefSymbols>
     <ListValues>
-      <Value>DEBUG</Value>
       <Value>F_CPU=1000000UL</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>

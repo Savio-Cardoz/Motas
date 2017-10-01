@@ -19,12 +19,12 @@
 /*========================================================================================*/
 
 /* All required flags in the application layer are present in this variable (8 per variable) */
-uint8_t flag_register_controller = 0;			
-
+uint8_t flag_register_controller = 0;		
 /* Flag to indicate if the sd card is empty */
 #define flag_sd_card_empty_g REGISTER_BIT(flag_register_controller, 0)
 /* Flag to indicate if the music is playing */
 #define flag_player_status_g REGISTER_BIT(flag_register_controller, 1)
+#define flag_uss_state_g REGISTER_BIT(flag_register_controller, 2)	
 
 /*===============================Global variables==========================================*/
 
@@ -32,12 +32,12 @@ uint8_t flag_register_controller = 0;
 static t_motascontroller_state motascontroller_state = MOTAS_INIT_STATE;
 
 /* Holds the threshold value of the Ultrasonic sensor */
-static uint16_t threshold_uss_count = 0;
+uint16_t threshold_uss_count = 0;
 
 /* threshold uss count can be set different than normal. Delete if not required */
 static uint16_t debug_threshold_uss_count = 0;
 /*Demo value. Can be changed or can be kept as configurable*/
-uint16_t threshold_pir_count = 4;
+uint16_t threshold_pir_count = 1;
 
 /*========================================================================================*/
 
@@ -49,7 +49,14 @@ uint16_t threshold_pir_count = 4;
 */
 void Init_State(void)
 {
-	//TODO: extern this flag. Please do not change the name
+	flag_register_controller = 0;
+	threshold_uss_count = 65535;
+	
+	// TODO: Add code to check the status of the DFplayer if a SD card is or isn't inserted
+	if(Dfplayer_Query_Card_Presence())
+	flag_sd_card_empty_g = True;
+	else flag_sd_card_empty_g = False;
+	// TODO: extern this flag. Please do not change the name
 	if(True == flag_sd_card_empty_g)
 	{
 		#ifdef DEBUG_ON
@@ -61,7 +68,8 @@ void Init_State(void)
 
 	//TODO: Check if any additional condition is required for this transition
 	/* No debugging required. Start calibration */
-	else{	
+	else
+	{	
 		motascontroller_state = MOTAS_CALIBRATION_STATE;	
 	}
 }
@@ -75,9 +83,11 @@ void Init_State(void)
 * @date 29/05/2017
 */
 void Calibration_State(void)
-{
+{	
 	/* Update the value of threshold*/
+	_delay_ms(5000);
 	threshold_uss_count = Get_Uss_Count();
+	threshold_uss_count -= 200;
 	
 	#if DEBUG_ON
 	SendDebug("USS calib");
@@ -88,9 +98,9 @@ void Calibration_State(void)
 	
 	#if DEBUG_ON
 	/* Red led light for 1 second indicating calibration done and Motas entering the standy state */
-	DebugLedTransmit(LED_ON ,LED_RED);
-	_delay_ms(1000);
-	DebugLedTransmit(LED_OFF ,LED_RED);		/* Switch OFF the LED */
+	//DebugLedTransmit(LED_ON ,LED_RED);
+	//_delay_ms(1000);
+	//DebugLedTransmit(LED_OFF ,LED_RED);		/* Switch OFF the LED */
 	#endif
 	
 	/* Update state */
@@ -118,8 +128,9 @@ void Standby_State(void)
 	standby_usscount = Get_Uss_Count(); 
 
 	/*Check if Ultrasonic or pir has triggered because customer entering the room */
-	if((standby_usscount < threshold_uss_count) || (standby_pircount > 1))
+	if(flag_uss_state_g || (standby_pircount > 1))
 	{
+		flag_uss_state_g = False;
 		/* Clear the standby pir count */
 		standby_pircount = 0;
 		
@@ -131,17 +142,26 @@ void Standby_State(void)
 		/* Ignore uss count */
 		if(standby_pircount > threshold_pir_count)
 		{
+			#if DEBUG_ON
+			SendDebug("State changed : MOTAS ACTIVE");
+			#endif
 			motascontroller_state = MOTAS_ACTIVE_STATE;
 		}
 		/* Do nothing and stay in the current state */
 		else 
 		{
+			#if DEBUG_ON
+			SendDebug("State changed : MOTAS STANDBY");
+			#endif
 			motascontroller_state = MOTAS_STANDBY_STATE;
 		}
 	}
 	/* Do nothing and stay in the current state */
 	else
 	{
+		#if DEBUG_ON
+		SendDebug("State changed : MOTAS STANDBY");
+		#endif
 		motascontroller_state = MOTAS_STANDBY_STATE;
 	}
 }
@@ -172,33 +192,33 @@ void Active_State(void)
 		/* Do nothing */
 	}
 
-	/* Orange led light for 1 second indicating in the standy state */
-	DebugLedTransmit(LED_ON ,LED_ORANGE);
-	_delay_ms(1000);
-	DebugLedTransmit(LED_OFF ,LED_ORANGE);		/* Switch OFF the LED */
+	///* Orange led light for 1 second indicating in the standy state */
+	//DebugLedTransmit(LED_ON ,LED_ORANGE);
+	//_delay_ms(1000);
+	//DebugLedTransmit(LED_OFF ,LED_ORANGE);		/* Switch OFF the LED */
 	
 	Reset_Pir_count();
 
-	/* Get ultrasonic count */
-	active_usscount = Get_Uss_Count(); 
-	_delay_ms(3000);
+	_delay_ms(5000);			// Default scan rate of the PIR requires 5 seconds before the next pulse is given
 	
-	/* Get ultrasonic count */
-	active_usscount = Get_Uss_Count(); 
 	/* Get pir count */
 	active_pir_count = Get_Pir_count();
 	
 	/* Check if Customer present in the room */
-	if((active_pir_count >= threshold_pir_count) || (active_usscount < threshold_uss_count))
+	if((active_pir_count >= threshold_pir_count) && (!flag_uss_state_g))
 	{
 		/* Do not change the state. Keep audio playing*/
 		motascontroller_state = MOTAS_ACTIVE_STATE;
 	}
 	/*Customer has left the room */
-	else
+	else if(flag_uss_state_g)
 	{
+		flag_uss_state_g = False;
 		/* Stop playing music */
-		Dfplayer_Cmd(CMD_STOP, 1);
+		#if DEBUG_ON
+		SendDebug("State changed MOTAS STOP PLaying");
+		#endif
+		Dfplayer_Cmd(CMD_PAUSE, 1);
 		
 		/* Change the status of music player to false(Music not playing) */
 		flag_player_status_g = False;
@@ -207,6 +227,7 @@ void Active_State(void)
 		Reset_Pir_count();
 		motascontroller_state = MOTAS_STANDBY_STATE;	
 	}
+	
 }
 
 /**
@@ -221,6 +242,10 @@ void Debugging_State(void)
 	uint16_t pir_count = 0;
 	uint16_t uss_count = 0;
 
+	#if DEBUG_ON
+	SendDebug("STATE : DEBUGGING");
+	#endif
+		
 	/* Yellow led light indicating start of Debugging mode */
 	DebugLedTransmit(LED_ON ,LED_YELLOW);
 	_delay_ms(2000);

@@ -15,7 +15,7 @@
 /*************************************************************************
 *		Ring Buffer declarations
 *************************************************************************/
-#define RING_SIZE   64
+#define RING_SIZE   12
 #define BUFFER_EMPTY 0
 #define BUFFER_NOT_EMPTY 1
 typedef uint8_t ring_pos_t;

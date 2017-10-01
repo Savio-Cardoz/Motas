@@ -57,7 +57,7 @@ void Dfplayer_Cmd(uint8_t cmd, uint16_t parameter)
 		command.feedback = Ring_Remove();
 		command.parah = Ring_Remove();
 		command.paral = Ring_Remove();
-		command.tail = Ring_Remove();
+		//command.tail = Ring_Remove();
 	}
 }
 
@@ -71,5 +71,49 @@ void Dfplayer_Send(command_t* strct_ptr)
 	USART_SendByte(strct_ptr->parah);
 	USART_SendByte(strct_ptr->paral);
 	USART_SendByte(strct_ptr->tail);
+}
+
+
+
+/* Query the DFPLAYER module for the presence of a card.
+ * returns		0 if card is present
+				1 if no card is present
+ */				
+				 
+uint8_t Dfplayer_Query_Card_Presence()
+{
+	uint8_t tempholder = 0;
+	command.header = CMD_STRT_BYTE;
+	command.version = CMD_VER;
+	command.lenght = 0x06;
+	command.type = CMD_TF_FILES;
+	command.feedback = CMD_RECV_NFB;
+	command.parah = 0x00;
+	command.paral = 0x00;
+	command.tail = CMD_END_BYTE;
+	
+	Dfplayer_Send(&command);
+
+	/*************************************************************************
+	*  If Commands are query based, a immediate response will be received
+	*************************************************************************/
+	_delay_ms(10);
+	if(Is_Buffer_Empty() == BUFFER_NOT_EMPTY)
+	{
+		do{
+			tempholder = Ring_Remove();
+		}while(tempholder != CMD_STRT_BYTE);
+		command.version = Ring_Remove();				// Remove the VER byte from the buffer
+		command.lenght = Ring_Remove();				// Remove the CMD byte from the buffer
+		command.type = Ring_Remove();
+		command.feedback = Ring_Remove();
+		command.parah = Ring_Remove();
+		command.paral = Ring_Remove();
+	}
+	
+	if(command.type == CMD_ERROR)
+	return 1;
+	
+	else return 0;
 }
 

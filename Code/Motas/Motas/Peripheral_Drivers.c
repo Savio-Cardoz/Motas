@@ -9,7 +9,34 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include "Peripheral_Drivers.h"
+#include "Motas_Controller.h"
 #include "debug_func.h"
+
+static volatile uint16_t pir_trigger_count, UssPulseCount;
+static volatile uint16_t timer1_ovf_count = 0;
+extern uint8_t flag_register_controller;
+extern uint16_t threshold_uss_count;
+
+#define SET_USS_FLAG	({flag_register_controller |= (1 << 2);})
+#define CLEAR_USS_FLAG  ({flag_register_controller &= ~(1 << 2);})
+
+ISR(TIMER1_OVF_vect)
+{
+	++timer1_ovf_count;
+}
+
+ISR(TIMER0_OVF_vect)
+{
+	static timer_ovf_count = 0;
+	
+	if((timer_ovf_count++) == 500)
+	{
+		Trigger_Ultrasonic_Sensor();
+		timer_ovf_count = 0;
+		TCCR0 &= ~(1 << CS00);		// Stop the timer. Timer is restarted in the USS echo received interrupt
+		TCNT0 = 0;
+	}
+}
 
 ISR(PIR_INTERRUPT_VECT)
 {
@@ -22,10 +49,21 @@ ISR(USS_INTERRUPT_VECT)
 	if (UssEdgeCount)		
 	{
 		Stop_Timer1();
-		UssPulseCount = TCNT1;		// Store the time duration of the echo pulse.
+		UssPulseCount = TCNT1;		// Store the time duration of the echo pulse. 
+		timer1_ovf_count = 0;
 		TCNT1 = 0;
 		UssEdgeCount = 0;
 		MCUCR |= (1 << ISC01) | (1 << ISC00);												// Rising edge will trigger the next interrupt
+		TCCR0 |= (1 << CS00);					// Start the timer0 to wait for 1ms to trigger the USS
+		
+		if(UssPulseCount < threshold_uss_count)
+		{
+			#if DEBUG_ON
+			SendDebug("Thres_cross");
+			USART_Transmit_dec(UssPulseCount);
+			#endif	
+			SET_USS_FLAG;	
+		}
 	}
 	else 
 	{
@@ -85,21 +123,22 @@ void Led_Off(uint8_t led_color)
 
 uint16_t Get_Uss_Count()
 {
-	Trigger_Ultrasonic_Sensor();
-	_delay_ms(1000);
-	#ifdef DEBUG_ON
-	SendDebug("USS Triggered");
-	SendDebug("USS count:");
-	USART_Transmit_dec(UssPulseCount);
-	USART_SendByte(0x0D);
-	USART_SendByte(0x0A);
-	#endif
+	// TODO: replace with a flag to check if the USS ECHO pulse has been received Speed can be 
 	return UssPulseCount;
+}
+
+
+/* Timer 0 will be used to auto trigger the USS	@ periodic intervals	*/
+void Init_Timer0()
+{
+	TIMSK |= (1 << TOIE0);
+	TCCR0 |= (1 << CS00);		// Start the timer	default 256us overflow rate @ 1MHZ.
 }
 
 void Init_Timer1()
 {
 	TCNT1 = 0;
+	TIMSK |= (1 << TOIE1);
 }
 
 void Start_Timer1()

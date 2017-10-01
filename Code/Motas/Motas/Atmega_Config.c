@@ -15,14 +15,16 @@ void Atmega_init()
 {
 	USART_Init();
 	
-#ifdef DEBUG_ON
+#if DEBUG_ON
 	SendDebug("Serial OK!");
 #endif // DEBUG_ON
 	
 	Init_Ultrasonic_Sensor();
 	Init_Pir();
 	Init_Timer1();
+	Init_Timer0();
 	Init_Gpio();
 	DebugLedInit();
+	Trigger_Ultrasonic_Sensor();
 	sei();
 }

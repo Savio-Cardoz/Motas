@@ -57,13 +57,13 @@ void USART_SendByte(uint8_t u8Data)
 */
 void SendDebug(char * StringPtr)
 {
+	USART_SendByte(0x0D);
+	USART_SendByte(0x0A);
 	while(*StringPtr != 0x00)
 	{
 		USART_SendByte(*StringPtr);
 		StringPtr++;
 	}
-	USART_SendByte(0x0D);
-	USART_SendByte(0x0A);
 }
 
 uint8_t USART_ReceiveByte()

@@ -26,7 +26,8 @@
 #define CMD_PLY			0x0D
 #define	CMD_PAUSE		0x0E
 #define CMD_STOP		0x16
-#define CMD_TF_FILES	0x47
+#define CMD_TF_FILES	0x48
+#define CMD_ERROR		0x40
 
 #define CMD_RECV_FB		0x01
 #define CMD_RECV_NFB	0x00
@@ -47,6 +48,7 @@ typedef struct {
 void Dfplayer_Cmd(uint8_t cmd, uint16_t parameter);
 void Dfplayer_Send(command_t* strct_ptr);
 int Ring_Add(char c);
+uint8_t Dfplayer_Query_Card_Presence();
 
 
 #endif /* DFPLAYER_H_ */
