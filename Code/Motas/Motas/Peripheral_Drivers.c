@@ -27,7 +27,7 @@ ISR(TIMER1_OVF_vect)
 
 ISR(TIMER0_OVF_vect)
 {
-	static timer_ovf_count = 0;
+	static uint16_t timer_ovf_count = 0;
 	
 	if((timer_ovf_count++) == 500)
 	{
@@ -62,6 +62,7 @@ ISR(USS_INTERRUPT_VECT)
 			SendDebug("Thres_cross");
 			USART_Transmit_dec(UssPulseCount);
 			#endif	
+			DebugLedTransmit(LED_ON, LED_RED);
 			SET_USS_FLAG;	
 		}
 	}

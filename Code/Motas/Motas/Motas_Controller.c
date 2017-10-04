@@ -127,9 +127,12 @@ void Standby_State(void)
 	standby_pircount = Get_Pir_count();
 	standby_usscount = Get_Uss_Count(); 
 
+	DebugLedTransmit(LED_ON, LED_YELLOW);
+
 	/*Check if Ultrasonic or pir has triggered because customer entering the room */
 	if(flag_uss_state_g || (standby_pircount > 1))
 	{
+		DebugLedTransmit(LED_OFF ,LED_RED);
 		flag_uss_state_g = False;
 		/* Clear the standby pir count */
 		standby_pircount = 0;
@@ -178,6 +181,8 @@ void Active_State(void)
 {
 	uint16_t active_pir_count = 0;
 	uint16_t active_usscount = 0; 
+	/* Reset the USS flag	*/
+	flag_uss_state_g = False;
 	
 	/* Play music */
 	if(False == flag_player_status_g)
@@ -193,7 +198,8 @@ void Active_State(void)
 	}
 
 	///* Orange led light for 1 second indicating in the standy state */
-	//DebugLedTransmit(LED_ON ,LED_ORANGE);
+	
+	DebugLedTransmit(LED_OFF, LED_YELLOW);
 	//_delay_ms(1000);
 	//DebugLedTransmit(LED_OFF ,LED_ORANGE);		/* Switch OFF the LED */
 	
@@ -213,11 +219,14 @@ void Active_State(void)
 	/*Customer has left the room */
 	else if(flag_uss_state_g)
 	{
+		DebugLedTransmit(LED_OFF ,LED_RED);
 		flag_uss_state_g = False;
 		/* Stop playing music */
 		#if DEBUG_ON
 		SendDebug("State changed MOTAS STOP PLaying");
 		#endif
+		Dfplayer_Cmd(CMD_PAUSE, 1);
+		Dfplayer_Cmd(CMD_PAUSE, 1);
 		Dfplayer_Cmd(CMD_PAUSE, 1);
 		
 		/* Change the status of music player to false(Music not playing) */
@@ -227,6 +236,7 @@ void Active_State(void)
 		Reset_Pir_count();
 		motascontroller_state = MOTAS_STANDBY_STATE;	
 	}
+	else motascontroller_state = MOTAS_ACTIVE_STATE;
 	
 }
 
