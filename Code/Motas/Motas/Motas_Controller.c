@@ -13,13 +13,14 @@
 #include <util/delay.h>
 #include "Atmega_Config.h"
 #include "Atmega_Uart.h"
+#include "Peripheral_Drivers.h"
 #include "Motas_Controller.h"
 #include "debug_func.h"
 #include "Dfplayer.h"
 /*========================================================================================*/
 
 /* All required flags in the application layer are present in this variable (8 per variable) */
-uint8_t flag_register_controller = 0;		
+reg flag_register_controller;		
 /* Flag to indicate if the sd card is empty */
 #define flag_sd_card_empty_g REGISTER_BIT(flag_register_controller, 0)
 /* Flag to indicate if the music is playing */
@@ -49,7 +50,6 @@ uint16_t threshold_pir_count = 1;
 */
 void Init_State(void)
 {
-	flag_register_controller = 0;
 	threshold_uss_count = 65535;
 	
 	// TODO: Add code to check the status of the DFplayer if a SD card is or isn't inserted
@@ -121,11 +121,9 @@ void Calibration_State(void)
 void Standby_State(void)
 {
 	uint16_t standby_pircount = 0;
-	uint16_t standby_usscount = 0; 
 
 	/* Update the PIR and ultrasonic count */
 	standby_pircount = Get_Pir_count();
-	standby_usscount = Get_Uss_Count(); 
 
 	DebugLedTransmit(LED_ON, LED_YELLOW);
 
@@ -180,7 +178,6 @@ void Standby_State(void)
 void Active_State(void)
 {
 	uint16_t active_pir_count = 0;
-	uint16_t active_usscount = 0; 
 	/* Reset the USS flag	*/
 	flag_uss_state_g = False;
 	
@@ -225,8 +222,6 @@ void Active_State(void)
 		#if DEBUG_ON
 		SendDebug("State changed MOTAS STOP PLaying");
 		#endif
-		Dfplayer_Cmd(CMD_PAUSE, 1);
-		Dfplayer_Cmd(CMD_PAUSE, 1);
 		Dfplayer_Cmd(CMD_PAUSE, 1);
 		
 		/* Change the status of music player to false(Music not playing) */

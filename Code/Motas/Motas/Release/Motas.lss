@@ -1,0 +1,881 @@
+
+Motas.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000006cc  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000002  00800060  000006cc  00000760  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000023  00800062  00800062  00000762  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  00000762  2**0
+                  CONTENTS, READONLY
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	d5 c2       	rjmp	.+1450   	; 0x5ae <__vector_1>
+   4:	4f c2       	rjmp	.+1182   	; 0x4a4 <__vector_2>
+   6:	2a c0       	rjmp	.+84     	; 0x5c <__bad_interrupt>
+   8:	29 c0       	rjmp	.+82     	; 0x5c <__bad_interrupt>
+   a:	28 c0       	rjmp	.+80     	; 0x5c <__bad_interrupt>
+   c:	27 c0       	rjmp	.+78     	; 0x5c <__bad_interrupt>
+   e:	26 c0       	rjmp	.+76     	; 0x5c <__bad_interrupt>
+  10:	32 c2       	rjmp	.+1124   	; 0x476 <__vector_8>
+  12:	66 c2       	rjmp	.+1228   	; 0x4e0 <__vector_9>
+  14:	23 c0       	rjmp	.+70     	; 0x5c <__bad_interrupt>
+  16:	52 c0       	rjmp	.+164    	; 0xbc <__vector_11>
+  18:	21 c0       	rjmp	.+66     	; 0x5c <__bad_interrupt>
+  1a:	20 c0       	rjmp	.+64     	; 0x5c <__bad_interrupt>
+  1c:	1f c0       	rjmp	.+62     	; 0x5c <__bad_interrupt>
+  1e:	1e c0       	rjmp	.+60     	; 0x5c <__bad_interrupt>
+  20:	1d c0       	rjmp	.+58     	; 0x5c <__bad_interrupt>
+  22:	1c c0       	rjmp	.+56     	; 0x5c <__bad_interrupt>
+  24:	1b c0       	rjmp	.+54     	; 0x5c <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+
+00000032 <__do_copy_data>:
+  32:	10 e0       	ldi	r17, 0x00	; 0
+  34:	a0 e6       	ldi	r26, 0x60	; 96
+  36:	b0 e0       	ldi	r27, 0x00	; 0
+  38:	ec ec       	ldi	r30, 0xCC	; 204
+  3a:	f6 e0       	ldi	r31, 0x06	; 6
+  3c:	02 c0       	rjmp	.+4      	; 0x42 <__SREG__+0x3>
+  3e:	05 90       	lpm	r0, Z+
+  40:	0d 92       	st	X+, r0
+  42:	a2 36       	cpi	r26, 0x62	; 98
+  44:	b1 07       	cpc	r27, r17
+  46:	d9 f7       	brne	.-10     	; 0x3e <__SP_H__>
+
+00000048 <__do_clear_bss>:
+  48:	20 e0       	ldi	r18, 0x00	; 0
+  4a:	a2 e6       	ldi	r26, 0x62	; 98
+  4c:	b0 e0       	ldi	r27, 0x00	; 0
+  4e:	01 c0       	rjmp	.+2      	; 0x52 <.do_clear_bss_start>
+
+00000050 <.do_clear_bss_loop>:
+  50:	1d 92       	st	X+, r1
+
+00000052 <.do_clear_bss_start>:
+  52:	a5 38       	cpi	r26, 0x85	; 133
+  54:	b2 07       	cpc	r27, r18
+  56:	e1 f7       	brne	.-8      	; 0x50 <.do_clear_bss_loop>
+  58:	22 d1       	rcall	.+580    	; 0x29e <main>
+  5a:	36 c3       	rjmp	.+1644   	; 0x6c8 <_exit>
+
+0000005c <__bad_interrupt>:
+  5c:	d1 cf       	rjmp	.-94     	; 0x0 <__vectors>
+
+0000005e <Atmega_init>:
+  5e:	09 d0       	rcall	.+18     	; 0x72 <USART_Init>
+  60:	81 d2       	rcall	.+1282   	; 0x564 <Init_Ultrasonic_Sensor>
+  62:	77 d2       	rcall	.+1262   	; 0x552 <Init_Pir>
+  64:	96 d2       	rcall	.+1324   	; 0x592 <Init_Timer1>
+  66:	8e d2       	rcall	.+1308   	; 0x584 <Init_Timer0>
+  68:	05 d3       	rcall	.+1546   	; 0x674 <Init_Gpio>
+  6a:	70 d0       	rcall	.+224    	; 0x14c <DebugLedInit>
+  6c:	32 d2       	rcall	.+1124   	; 0x4d2 <Trigger_Ultrasonic_Sensor>
+  6e:	78 94       	sei
+  70:	08 95       	ret
+
+00000072 <USART_Init>:
+  72:	8c e0       	ldi	r24, 0x0C	; 12
+  74:	89 b9       	out	0x09, r24	; 9
+  76:	10 bc       	out	0x20, r1	; 32
+  78:	59 9a       	sbi	0x0b, 1	; 11
+  7a:	88 e9       	ldi	r24, 0x98	; 152
+  7c:	8a b9       	out	0x0a, r24	; 10
+  7e:	08 95       	ret
+
+00000080 <USART_SendByte>:
+  80:	5d 9b       	sbis	0x0b, 5	; 11
+  82:	fe cf       	rjmp	.-4      	; 0x80 <USART_SendByte>
+  84:	8c b9       	out	0x0c, r24	; 12
+  86:	08 95       	ret
+
+00000088 <Ring_Add>:
+  88:	28 2f       	mov	r18, r24
+  8a:	80 91 6e 00 	lds	r24, 0x006E
+  8e:	90 e0       	ldi	r25, 0x00	; 0
+  90:	01 96       	adiw	r24, 0x01	; 1
+  92:	6c e0       	ldi	r22, 0x0C	; 12
+  94:	70 e0       	ldi	r23, 0x00	; 0
+  96:	05 d3       	rcall	.+1546   	; 0x6a2 <__divmodhi4>
+  98:	90 91 6f 00 	lds	r25, 0x006F
+  9c:	98 17       	cp	r25, r24
+  9e:	59 f0       	breq	.+22     	; 0xb6 <Ring_Add+0x2e>
+  a0:	e0 91 6e 00 	lds	r30, 0x006E
+  a4:	f0 e0       	ldi	r31, 0x00	; 0
+  a6:	e0 59       	subi	r30, 0x90	; 144
+  a8:	ff 4f       	sbci	r31, 0xFF	; 255
+  aa:	20 83       	st	Z, r18
+  ac:	80 93 6e 00 	sts	0x006E, r24
+  b0:	80 e0       	ldi	r24, 0x00	; 0
+  b2:	90 e0       	ldi	r25, 0x00	; 0
+  b4:	08 95       	ret
+  b6:	8f ef       	ldi	r24, 0xFF	; 255
+  b8:	9f ef       	ldi	r25, 0xFF	; 255
+  ba:	08 95       	ret
+
+000000bc <__vector_11>:
+  bc:	1f 92       	push	r1
+  be:	0f 92       	push	r0
+  c0:	0f b6       	in	r0, 0x3f	; 63
+  c2:	0f 92       	push	r0
+  c4:	11 24       	eor	r1, r1
+  c6:	2f 93       	push	r18
+  c8:	3f 93       	push	r19
+  ca:	4f 93       	push	r20
+  cc:	5f 93       	push	r21
+  ce:	6f 93       	push	r22
+  d0:	7f 93       	push	r23
+  d2:	8f 93       	push	r24
+  d4:	9f 93       	push	r25
+  d6:	af 93       	push	r26
+  d8:	bf 93       	push	r27
+  da:	ef 93       	push	r30
+  dc:	ff 93       	push	r31
+  de:	8c b1       	in	r24, 0x0c	; 12
+  e0:	d3 df       	rcall	.-90     	; 0x88 <Ring_Add>
+  e2:	ff 91       	pop	r31
+  e4:	ef 91       	pop	r30
+  e6:	bf 91       	pop	r27
+  e8:	af 91       	pop	r26
+  ea:	9f 91       	pop	r25
+  ec:	8f 91       	pop	r24
+  ee:	7f 91       	pop	r23
+  f0:	6f 91       	pop	r22
+  f2:	5f 91       	pop	r21
+  f4:	4f 91       	pop	r20
+  f6:	3f 91       	pop	r19
+  f8:	2f 91       	pop	r18
+  fa:	0f 90       	pop	r0
+  fc:	0f be       	out	0x3f, r0	; 63
+  fe:	0f 90       	pop	r0
+ 100:	1f 90       	pop	r1
+ 102:	18 95       	reti
+
+00000104 <Ring_Remove>:
+ 104:	90 91 6e 00 	lds	r25, 0x006E
+ 108:	80 91 6f 00 	lds	r24, 0x006F
+ 10c:	98 17       	cp	r25, r24
+ 10e:	91 f0       	breq	.+36     	; 0x134 <Ring_Remove+0x30>
+ 110:	e0 91 6f 00 	lds	r30, 0x006F
+ 114:	f0 e0       	ldi	r31, 0x00	; 0
+ 116:	e0 59       	subi	r30, 0x90	; 144
+ 118:	ff 4f       	sbci	r31, 0xFF	; 255
+ 11a:	20 81       	ld	r18, Z
+ 11c:	80 91 6f 00 	lds	r24, 0x006F
+ 120:	90 e0       	ldi	r25, 0x00	; 0
+ 122:	01 96       	adiw	r24, 0x01	; 1
+ 124:	6c e0       	ldi	r22, 0x0C	; 12
+ 126:	70 e0       	ldi	r23, 0x00	; 0
+ 128:	bc d2       	rcall	.+1400   	; 0x6a2 <__divmodhi4>
+ 12a:	80 93 6f 00 	sts	0x006F, r24
+ 12e:	82 2f       	mov	r24, r18
+ 130:	90 e0       	ldi	r25, 0x00	; 0
+ 132:	08 95       	ret
+ 134:	8f ef       	ldi	r24, 0xFF	; 255
+ 136:	9f ef       	ldi	r25, 0xFF	; 255
+ 138:	08 95       	ret
+
+0000013a <Is_Buffer_Empty>:
+ 13a:	20 91 6e 00 	lds	r18, 0x006E
+ 13e:	90 91 6f 00 	lds	r25, 0x006F
+ 142:	81 e0       	ldi	r24, 0x01	; 1
+ 144:	29 13       	cpse	r18, r25
+ 146:	01 c0       	rjmp	.+2      	; 0x14a <Is_Buffer_Empty+0x10>
+ 148:	80 e0       	ldi	r24, 0x00	; 0
+ 14a:	08 95       	ret
+
+0000014c <DebugLedInit>:
+ 14c:	a0 9a       	sbi	0x14, 0	; 20
+ 14e:	a1 9a       	sbi	0x14, 1	; 20
+ 150:	a8 98       	cbi	0x15, 0	; 21
+ 152:	a9 98       	cbi	0x15, 1	; 21
+ 154:	08 95       	ret
+
+00000156 <DebugLedTransmit>:
+ 156:	81 30       	cpi	r24, 0x01	; 1
+ 158:	61 f4       	brne	.+24     	; 0x172 <DebugLedTransmit+0x1c>
+ 15a:	62 30       	cpi	r22, 0x02	; 2
+ 15c:	29 f0       	breq	.+10     	; 0x168 <DebugLedTransmit+0x12>
+ 15e:	63 30       	cpi	r22, 0x03	; 3
+ 160:	29 f0       	breq	.+10     	; 0x16c <DebugLedTransmit+0x16>
+ 162:	61 30       	cpi	r22, 0x01	; 1
+ 164:	99 f4       	brne	.+38     	; 0x18c <DebugLedTransmit+0x36>
+ 166:	03 c0       	rjmp	.+6      	; 0x16e <DebugLedTransmit+0x18>
+ 168:	a8 9a       	sbi	0x15, 0	; 21
+ 16a:	08 95       	ret
+ 16c:	a8 9a       	sbi	0x15, 0	; 21
+ 16e:	a9 9a       	sbi	0x15, 1	; 21
+ 170:	08 95       	ret
+ 172:	81 11       	cpse	r24, r1
+ 174:	0b c0       	rjmp	.+22     	; 0x18c <DebugLedTransmit+0x36>
+ 176:	62 30       	cpi	r22, 0x02	; 2
+ 178:	29 f0       	breq	.+10     	; 0x184 <DebugLedTransmit+0x2e>
+ 17a:	63 30       	cpi	r22, 0x03	; 3
+ 17c:	29 f0       	breq	.+10     	; 0x188 <DebugLedTransmit+0x32>
+ 17e:	61 30       	cpi	r22, 0x01	; 1
+ 180:	29 f4       	brne	.+10     	; 0x18c <DebugLedTransmit+0x36>
+ 182:	03 c0       	rjmp	.+6      	; 0x18a <DebugLedTransmit+0x34>
+ 184:	a8 98       	cbi	0x15, 0	; 21
+ 186:	08 95       	ret
+ 188:	a8 98       	cbi	0x15, 0	; 21
+ 18a:	a9 98       	cbi	0x15, 1	; 21
+ 18c:	08 95       	ret
+
+0000018e <Dfplayer_Send>:
+ 18e:	cf 93       	push	r28
+ 190:	df 93       	push	r29
+ 192:	ec 01       	movw	r28, r24
+ 194:	88 81       	ld	r24, Y
+ 196:	74 df       	rcall	.-280    	; 0x80 <USART_SendByte>
+ 198:	89 81       	ldd	r24, Y+1	; 0x01
+ 19a:	72 df       	rcall	.-284    	; 0x80 <USART_SendByte>
+ 19c:	8a 81       	ldd	r24, Y+2	; 0x02
+ 19e:	70 df       	rcall	.-288    	; 0x80 <USART_SendByte>
+ 1a0:	8b 81       	ldd	r24, Y+3	; 0x03
+ 1a2:	6e df       	rcall	.-292    	; 0x80 <USART_SendByte>
+ 1a4:	8c 81       	ldd	r24, Y+4	; 0x04
+ 1a6:	6c df       	rcall	.-296    	; 0x80 <USART_SendByte>
+ 1a8:	8d 81       	ldd	r24, Y+5	; 0x05
+ 1aa:	6a df       	rcall	.-300    	; 0x80 <USART_SendByte>
+ 1ac:	8e 81       	ldd	r24, Y+6	; 0x06
+ 1ae:	68 df       	rcall	.-304    	; 0x80 <USART_SendByte>
+ 1b0:	8f 81       	ldd	r24, Y+7	; 0x07
+ 1b2:	df 91       	pop	r29
+ 1b4:	cf 91       	pop	r28
+ 1b6:	64 cf       	rjmp	.-312    	; 0x80 <USART_SendByte>
+
+000001b8 <Dfplayer_Cmd>:
+ 1b8:	9e e7       	ldi	r25, 0x7E	; 126
+ 1ba:	90 93 7c 00 	sts	0x007C, r25
+ 1be:	9f ef       	ldi	r25, 0xFF	; 255
+ 1c0:	90 93 7d 00 	sts	0x007D, r25
+ 1c4:	96 e0       	ldi	r25, 0x06	; 6
+ 1c6:	90 93 7e 00 	sts	0x007E, r25
+ 1ca:	80 93 7f 00 	sts	0x007F, r24
+ 1ce:	10 92 80 00 	sts	0x0080, r1
+ 1d2:	70 93 81 00 	sts	0x0081, r23
+ 1d6:	60 93 82 00 	sts	0x0082, r22
+ 1da:	8f ee       	ldi	r24, 0xEF	; 239
+ 1dc:	80 93 83 00 	sts	0x0083, r24
+ 1e0:	8c e7       	ldi	r24, 0x7C	; 124
+ 1e2:	90 e0       	ldi	r25, 0x00	; 0
+ 1e4:	d4 df       	rcall	.-88     	; 0x18e <Dfplayer_Send>
+ 1e6:	83 ec       	ldi	r24, 0xC3	; 195
+ 1e8:	99 e0       	ldi	r25, 0x09	; 9
+ 1ea:	01 97       	sbiw	r24, 0x01	; 1
+ 1ec:	f1 f7       	brne	.-4      	; 0x1ea <Dfplayer_Cmd+0x32>
+ 1ee:	00 c0       	rjmp	.+0      	; 0x1f0 <Dfplayer_Cmd+0x38>
+ 1f0:	00 00       	nop
+ 1f2:	a3 df       	rcall	.-186    	; 0x13a <Is_Buffer_Empty>
+ 1f4:	81 30       	cpi	r24, 0x01	; 1
+ 1f6:	a9 f4       	brne	.+42     	; 0x222 <Dfplayer_Cmd+0x6a>
+ 1f8:	85 df       	rcall	.-246    	; 0x104 <Ring_Remove>
+ 1fa:	8e 37       	cpi	r24, 0x7E	; 126
+ 1fc:	e9 f7       	brne	.-6      	; 0x1f8 <Dfplayer_Cmd+0x40>
+ 1fe:	82 df       	rcall	.-252    	; 0x104 <Ring_Remove>
+ 200:	80 93 7d 00 	sts	0x007D, r24
+ 204:	7f df       	rcall	.-258    	; 0x104 <Ring_Remove>
+ 206:	80 93 7e 00 	sts	0x007E, r24
+ 20a:	7c df       	rcall	.-264    	; 0x104 <Ring_Remove>
+ 20c:	80 93 7f 00 	sts	0x007F, r24
+ 210:	79 df       	rcall	.-270    	; 0x104 <Ring_Remove>
+ 212:	80 93 80 00 	sts	0x0080, r24
+ 216:	76 df       	rcall	.-276    	; 0x104 <Ring_Remove>
+ 218:	80 93 81 00 	sts	0x0081, r24
+ 21c:	73 df       	rcall	.-282    	; 0x104 <Ring_Remove>
+ 21e:	80 93 82 00 	sts	0x0082, r24
+ 222:	08 95       	ret
+
+00000224 <Dfplayer_Query_Card_Presence>:
+ 224:	8e e7       	ldi	r24, 0x7E	; 126
+ 226:	80 93 7c 00 	sts	0x007C, r24
+ 22a:	8f ef       	ldi	r24, 0xFF	; 255
+ 22c:	80 93 7d 00 	sts	0x007D, r24
+ 230:	86 e0       	ldi	r24, 0x06	; 6
+ 232:	80 93 7e 00 	sts	0x007E, r24
+ 236:	88 e4       	ldi	r24, 0x48	; 72
+ 238:	80 93 7f 00 	sts	0x007F, r24
+ 23c:	10 92 80 00 	sts	0x0080, r1
+ 240:	10 92 81 00 	sts	0x0081, r1
+ 244:	10 92 82 00 	sts	0x0082, r1
+ 248:	8f ee       	ldi	r24, 0xEF	; 239
+ 24a:	80 93 83 00 	sts	0x0083, r24
+ 24e:	8c e7       	ldi	r24, 0x7C	; 124
+ 250:	90 e0       	ldi	r25, 0x00	; 0
+ 252:	9d df       	rcall	.-198    	; 0x18e <Dfplayer_Send>
+ 254:	83 ec       	ldi	r24, 0xC3	; 195
+ 256:	99 e0       	ldi	r25, 0x09	; 9
+ 258:	01 97       	sbiw	r24, 0x01	; 1
+ 25a:	f1 f7       	brne	.-4      	; 0x258 <Dfplayer_Query_Card_Presence+0x34>
+ 25c:	00 c0       	rjmp	.+0      	; 0x25e <Dfplayer_Query_Card_Presence+0x3a>
+ 25e:	00 00       	nop
+ 260:	6c df       	rcall	.-296    	; 0x13a <Is_Buffer_Empty>
+ 262:	81 30       	cpi	r24, 0x01	; 1
+ 264:	a9 f4       	brne	.+42     	; 0x290 <Dfplayer_Query_Card_Presence+0x6c>
+ 266:	4e df       	rcall	.-356    	; 0x104 <Ring_Remove>
+ 268:	8e 37       	cpi	r24, 0x7E	; 126
+ 26a:	e9 f7       	brne	.-6      	; 0x266 <Dfplayer_Query_Card_Presence+0x42>
+ 26c:	4b df       	rcall	.-362    	; 0x104 <Ring_Remove>
+ 26e:	80 93 7d 00 	sts	0x007D, r24
+ 272:	48 df       	rcall	.-368    	; 0x104 <Ring_Remove>
+ 274:	80 93 7e 00 	sts	0x007E, r24
+ 278:	45 df       	rcall	.-374    	; 0x104 <Ring_Remove>
+ 27a:	80 93 7f 00 	sts	0x007F, r24
+ 27e:	42 df       	rcall	.-380    	; 0x104 <Ring_Remove>
+ 280:	80 93 80 00 	sts	0x0080, r24
+ 284:	3f df       	rcall	.-386    	; 0x104 <Ring_Remove>
+ 286:	80 93 81 00 	sts	0x0081, r24
+ 28a:	3c df       	rcall	.-392    	; 0x104 <Ring_Remove>
+ 28c:	80 93 82 00 	sts	0x0082, r24
+ 290:	81 e0       	ldi	r24, 0x01	; 1
+ 292:	90 91 7f 00 	lds	r25, 0x007F
+ 296:	90 34       	cpi	r25, 0x40	; 64
+ 298:	09 f0       	breq	.+2      	; 0x29c <Dfplayer_Query_Card_Presence+0x78>
+ 29a:	80 e0       	ldi	r24, 0x00	; 0
+ 29c:	08 95       	ret
+
+0000029e <main>:
+ 29e:	df de       	rcall	.-578    	; 0x5e <Atmega_init>
+ 2a0:	d6 d0       	rcall	.+428    	; 0x44e <MotasController>
+ 2a2:	fe cf       	rjmp	.-4      	; 0x2a0 <main+0x2>
+
+000002a4 <Init_State>:
+ 2a4:	8f ef       	ldi	r24, 0xFF	; 255
+ 2a6:	9f ef       	ldi	r25, 0xFF	; 255
+ 2a8:	90 93 63 00 	sts	0x0063, r25
+ 2ac:	80 93 62 00 	sts	0x0062, r24
+ 2b0:	b9 df       	rcall	.-142    	; 0x224 <Dfplayer_Query_Card_Presence>
+ 2b2:	88 23       	and	r24, r24
+ 2b4:	21 f0       	breq	.+8      	; 0x2be <Init_State+0x1a>
+ 2b6:	80 91 84 00 	lds	r24, 0x0084
+ 2ba:	81 60       	ori	r24, 0x01	; 1
+ 2bc:	03 c0       	rjmp	.+6      	; 0x2c4 <Init_State+0x20>
+ 2be:	80 91 84 00 	lds	r24, 0x0084
+ 2c2:	8e 7f       	andi	r24, 0xFE	; 254
+ 2c4:	80 93 84 00 	sts	0x0084, r24
+ 2c8:	80 91 84 00 	lds	r24, 0x0084
+ 2cc:	80 ff       	sbrs	r24, 0
+ 2ce:	02 c0       	rjmp	.+4      	; 0x2d4 <Init_State+0x30>
+ 2d0:	84 e0       	ldi	r24, 0x04	; 4
+ 2d2:	01 c0       	rjmp	.+2      	; 0x2d6 <Init_State+0x32>
+ 2d4:	81 e0       	ldi	r24, 0x01	; 1
+ 2d6:	80 93 64 00 	sts	0x0064, r24
+ 2da:	08 95       	ret
+
+000002dc <Calibration_State>:
+ 2dc:	2f e3       	ldi	r18, 0x3F	; 63
+ 2de:	82 e4       	ldi	r24, 0x42	; 66
+ 2e0:	9f e0       	ldi	r25, 0x0F	; 15
+ 2e2:	21 50       	subi	r18, 0x01	; 1
+ 2e4:	80 40       	sbci	r24, 0x00	; 0
+ 2e6:	90 40       	sbci	r25, 0x00	; 0
+ 2e8:	e1 f7       	brne	.-8      	; 0x2e2 <Calibration_State+0x6>
+ 2ea:	00 c0       	rjmp	.+0      	; 0x2ec <Calibration_State+0x10>
+ 2ec:	00 00       	nop
+ 2ee:	45 d1       	rcall	.+650    	; 0x57a <Get_Uss_Count>
+ 2f0:	88 5c       	subi	r24, 0xC8	; 200
+ 2f2:	91 09       	sbc	r25, r1
+ 2f4:	90 93 63 00 	sts	0x0063, r25
+ 2f8:	80 93 62 00 	sts	0x0062, r24
+ 2fc:	b6 d1       	rcall	.+876    	; 0x66a <Reset_Pir_count>
+ 2fe:	82 e0       	ldi	r24, 0x02	; 2
+ 300:	80 93 64 00 	sts	0x0064, r24
+ 304:	08 95       	ret
+
+00000306 <Standby_State>:
+ 306:	cf 93       	push	r28
+ 308:	df 93       	push	r29
+ 30a:	aa d1       	rcall	.+852    	; 0x660 <Get_Pir_count>
+ 30c:	ec 01       	movw	r28, r24
+ 30e:	61 e0       	ldi	r22, 0x01	; 1
+ 310:	81 e0       	ldi	r24, 0x01	; 1
+ 312:	21 df       	rcall	.-446    	; 0x156 <DebugLedTransmit>
+ 314:	80 91 84 00 	lds	r24, 0x0084
+ 318:	82 fd       	sbrc	r24, 2
+ 31a:	02 c0       	rjmp	.+4      	; 0x320 <Standby_State+0x1a>
+ 31c:	22 97       	sbiw	r28, 0x02	; 2
+ 31e:	d8 f0       	brcs	.+54     	; 0x356 <Standby_State+0x50>
+ 320:	62 e0       	ldi	r22, 0x02	; 2
+ 322:	80 e0       	ldi	r24, 0x00	; 0
+ 324:	18 df       	rcall	.-464    	; 0x156 <DebugLedTransmit>
+ 326:	80 91 84 00 	lds	r24, 0x0084
+ 32a:	8b 7f       	andi	r24, 0xFB	; 251
+ 32c:	80 93 84 00 	sts	0x0084, r24
+ 330:	2f eb       	ldi	r18, 0xBF	; 191
+ 332:	87 e2       	ldi	r24, 0x27	; 39
+ 334:	99 e0       	ldi	r25, 0x09	; 9
+ 336:	21 50       	subi	r18, 0x01	; 1
+ 338:	80 40       	sbci	r24, 0x00	; 0
+ 33a:	90 40       	sbci	r25, 0x00	; 0
+ 33c:	e1 f7       	brne	.-8      	; 0x336 <Standby_State+0x30>
+ 33e:	00 c0       	rjmp	.+0      	; 0x340 <Standby_State+0x3a>
+ 340:	00 00       	nop
+ 342:	8e d1       	rcall	.+796    	; 0x660 <Get_Pir_count>
+ 344:	20 91 60 00 	lds	r18, 0x0060
+ 348:	30 91 61 00 	lds	r19, 0x0061
+ 34c:	28 17       	cp	r18, r24
+ 34e:	39 07       	cpc	r19, r25
+ 350:	10 f4       	brcc	.+4      	; 0x356 <Standby_State+0x50>
+ 352:	83 e0       	ldi	r24, 0x03	; 3
+ 354:	01 c0       	rjmp	.+2      	; 0x358 <Standby_State+0x52>
+ 356:	82 e0       	ldi	r24, 0x02	; 2
+ 358:	80 93 64 00 	sts	0x0064, r24
+ 35c:	df 91       	pop	r29
+ 35e:	cf 91       	pop	r28
+ 360:	08 95       	ret
+
+00000362 <Active_State>:
+ 362:	80 91 84 00 	lds	r24, 0x0084
+ 366:	8b 7f       	andi	r24, 0xFB	; 251
+ 368:	80 93 84 00 	sts	0x0084, r24
+ 36c:	80 91 84 00 	lds	r24, 0x0084
+ 370:	81 fd       	sbrc	r24, 1
+ 372:	09 c0       	rjmp	.+18     	; 0x386 <Active_State+0x24>
+ 374:	80 91 84 00 	lds	r24, 0x0084
+ 378:	82 60       	ori	r24, 0x02	; 2
+ 37a:	80 93 84 00 	sts	0x0084, r24
+ 37e:	61 e0       	ldi	r22, 0x01	; 1
+ 380:	70 e0       	ldi	r23, 0x00	; 0
+ 382:	83 e0       	ldi	r24, 0x03	; 3
+ 384:	19 df       	rcall	.-462    	; 0x1b8 <Dfplayer_Cmd>
+ 386:	61 e0       	ldi	r22, 0x01	; 1
+ 388:	80 e0       	ldi	r24, 0x00	; 0
+ 38a:	e5 de       	rcall	.-566    	; 0x156 <DebugLedTransmit>
+ 38c:	6e d1       	rcall	.+732    	; 0x66a <Reset_Pir_count>
+ 38e:	2f e3       	ldi	r18, 0x3F	; 63
+ 390:	82 e4       	ldi	r24, 0x42	; 66
+ 392:	9f e0       	ldi	r25, 0x0F	; 15
+ 394:	21 50       	subi	r18, 0x01	; 1
+ 396:	80 40       	sbci	r24, 0x00	; 0
+ 398:	90 40       	sbci	r25, 0x00	; 0
+ 39a:	e1 f7       	brne	.-8      	; 0x394 <Active_State+0x32>
+ 39c:	00 c0       	rjmp	.+0      	; 0x39e <Active_State+0x3c>
+ 39e:	00 00       	nop
+ 3a0:	5f d1       	rcall	.+702    	; 0x660 <Get_Pir_count>
+ 3a2:	20 91 60 00 	lds	r18, 0x0060
+ 3a6:	30 91 61 00 	lds	r19, 0x0061
+ 3aa:	82 17       	cp	r24, r18
+ 3ac:	93 07       	cpc	r25, r19
+ 3ae:	30 f0       	brcs	.+12     	; 0x3bc <Active_State+0x5a>
+ 3b0:	80 91 84 00 	lds	r24, 0x0084
+ 3b4:	82 fd       	sbrc	r24, 2
+ 3b6:	02 c0       	rjmp	.+4      	; 0x3bc <Active_State+0x5a>
+ 3b8:	83 e0       	ldi	r24, 0x03	; 3
+ 3ba:	17 c0       	rjmp	.+46     	; 0x3ea <Active_State+0x88>
+ 3bc:	80 91 84 00 	lds	r24, 0x0084
+ 3c0:	82 ff       	sbrs	r24, 2
+ 3c2:	fa cf       	rjmp	.-12     	; 0x3b8 <Active_State+0x56>
+ 3c4:	62 e0       	ldi	r22, 0x02	; 2
+ 3c6:	80 e0       	ldi	r24, 0x00	; 0
+ 3c8:	c6 de       	rcall	.-628    	; 0x156 <DebugLedTransmit>
+ 3ca:	80 91 84 00 	lds	r24, 0x0084
+ 3ce:	8b 7f       	andi	r24, 0xFB	; 251
+ 3d0:	80 93 84 00 	sts	0x0084, r24
+ 3d4:	61 e0       	ldi	r22, 0x01	; 1
+ 3d6:	70 e0       	ldi	r23, 0x00	; 0
+ 3d8:	8e e0       	ldi	r24, 0x0E	; 14
+ 3da:	ee de       	rcall	.-548    	; 0x1b8 <Dfplayer_Cmd>
+ 3dc:	80 91 84 00 	lds	r24, 0x0084
+ 3e0:	8d 7f       	andi	r24, 0xFD	; 253
+ 3e2:	80 93 84 00 	sts	0x0084, r24
+ 3e6:	41 d1       	rcall	.+642    	; 0x66a <Reset_Pir_count>
+ 3e8:	82 e0       	ldi	r24, 0x02	; 2
+ 3ea:	80 93 64 00 	sts	0x0064, r24
+ 3ee:	08 95       	ret
+
+000003f0 <Debugging_State>:
+ 3f0:	cf 93       	push	r28
+ 3f2:	df 93       	push	r29
+ 3f4:	61 e0       	ldi	r22, 0x01	; 1
+ 3f6:	81 e0       	ldi	r24, 0x01	; 1
+ 3f8:	ae de       	rcall	.-676    	; 0x156 <DebugLedTransmit>
+ 3fa:	2f e7       	ldi	r18, 0x7F	; 127
+ 3fc:	8a e1       	ldi	r24, 0x1A	; 26
+ 3fe:	96 e0       	ldi	r25, 0x06	; 6
+ 400:	21 50       	subi	r18, 0x01	; 1
+ 402:	80 40       	sbci	r24, 0x00	; 0
+ 404:	90 40       	sbci	r25, 0x00	; 0
+ 406:	e1 f7       	brne	.-8      	; 0x400 <Debugging_State+0x10>
+ 408:	00 c0       	rjmp	.+0      	; 0x40a <Debugging_State+0x1a>
+ 40a:	00 00       	nop
+ 40c:	2e d1       	rcall	.+604    	; 0x66a <Reset_Pir_count>
+ 40e:	28 d1       	rcall	.+592    	; 0x660 <Get_Pir_count>
+ 410:	ec 01       	movw	r28, r24
+ 412:	b3 d0       	rcall	.+358    	; 0x57a <Get_Uss_Count>
+ 414:	22 97       	sbiw	r28, 0x02	; 2
+ 416:	60 f0       	brcs	.+24     	; 0x430 <Debugging_State+0x40>
+ 418:	62 e0       	ldi	r22, 0x02	; 2
+ 41a:	81 e0       	ldi	r24, 0x01	; 1
+ 41c:	9c de       	rcall	.-712    	; 0x156 <DebugLedTransmit>
+ 41e:	2f e7       	ldi	r18, 0x7F	; 127
+ 420:	8a e1       	ldi	r24, 0x1A	; 26
+ 422:	96 e0       	ldi	r25, 0x06	; 6
+ 424:	21 50       	subi	r18, 0x01	; 1
+ 426:	80 40       	sbci	r24, 0x00	; 0
+ 428:	90 40       	sbci	r25, 0x00	; 0
+ 42a:	e1 f7       	brne	.-8      	; 0x424 <Debugging_State+0x34>
+ 42c:	00 c0       	rjmp	.+0      	; 0x42e <Debugging_State+0x3e>
+ 42e:	00 00       	nop
+ 430:	63 e0       	ldi	r22, 0x03	; 3
+ 432:	81 e0       	ldi	r24, 0x01	; 1
+ 434:	90 de       	rcall	.-736    	; 0x156 <DebugLedTransmit>
+ 436:	2f e7       	ldi	r18, 0x7F	; 127
+ 438:	8a e1       	ldi	r24, 0x1A	; 26
+ 43a:	96 e0       	ldi	r25, 0x06	; 6
+ 43c:	21 50       	subi	r18, 0x01	; 1
+ 43e:	80 40       	sbci	r24, 0x00	; 0
+ 440:	90 40       	sbci	r25, 0x00	; 0
+ 442:	e1 f7       	brne	.-8      	; 0x43c <Debugging_State+0x4c>
+ 444:	00 c0       	rjmp	.+0      	; 0x446 <Debugging_State+0x56>
+ 446:	00 00       	nop
+ 448:	df 91       	pop	r29
+ 44a:	cf 91       	pop	r28
+ 44c:	08 95       	ret
+
+0000044e <MotasController>:
+ 44e:	80 91 64 00 	lds	r24, 0x0064
+ 452:	82 30       	cpi	r24, 0x02	; 2
+ 454:	69 f0       	breq	.+26     	; 0x470 <__stack+0x11>
+ 456:	28 f4       	brcc	.+10     	; 0x462 <__stack+0x3>
+ 458:	88 23       	and	r24, r24
+ 45a:	41 f0       	breq	.+16     	; 0x46c <__stack+0xd>
+ 45c:	81 30       	cpi	r24, 0x01	; 1
+ 45e:	39 f0       	breq	.+14     	; 0x46e <__stack+0xf>
+ 460:	08 95       	ret
+ 462:	83 30       	cpi	r24, 0x03	; 3
+ 464:	31 f0       	breq	.+12     	; 0x472 <__stack+0x13>
+ 466:	84 30       	cpi	r24, 0x04	; 4
+ 468:	29 f0       	breq	.+10     	; 0x474 <__stack+0x15>
+ 46a:	08 95       	ret
+ 46c:	1b cf       	rjmp	.-458    	; 0x2a4 <Init_State>
+ 46e:	36 cf       	rjmp	.-404    	; 0x2dc <Calibration_State>
+ 470:	4a cf       	rjmp	.-364    	; 0x306 <Standby_State>
+ 472:	77 cf       	rjmp	.-274    	; 0x362 <Active_State>
+ 474:	bd cf       	rjmp	.-134    	; 0x3f0 <Debugging_State>
+
+00000476 <__vector_8>:
+ 476:	1f 92       	push	r1
+ 478:	0f 92       	push	r0
+ 47a:	0f b6       	in	r0, 0x3f	; 63
+ 47c:	0f 92       	push	r0
+ 47e:	11 24       	eor	r1, r1
+ 480:	8f 93       	push	r24
+ 482:	9f 93       	push	r25
+ 484:	80 91 68 00 	lds	r24, 0x0068
+ 488:	90 91 69 00 	lds	r25, 0x0069
+ 48c:	01 96       	adiw	r24, 0x01	; 1
+ 48e:	90 93 69 00 	sts	0x0069, r25
+ 492:	80 93 68 00 	sts	0x0068, r24
+ 496:	9f 91       	pop	r25
+ 498:	8f 91       	pop	r24
+ 49a:	0f 90       	pop	r0
+ 49c:	0f be       	out	0x3f, r0	; 63
+ 49e:	0f 90       	pop	r0
+ 4a0:	1f 90       	pop	r1
+ 4a2:	18 95       	reti
+
+000004a4 <__vector_2>:
+ 4a4:	1f 92       	push	r1
+ 4a6:	0f 92       	push	r0
+ 4a8:	0f b6       	in	r0, 0x3f	; 63
+ 4aa:	0f 92       	push	r0
+ 4ac:	11 24       	eor	r1, r1
+ 4ae:	8f 93       	push	r24
+ 4b0:	9f 93       	push	r25
+ 4b2:	80 91 6c 00 	lds	r24, 0x006C
+ 4b6:	90 91 6d 00 	lds	r25, 0x006D
+ 4ba:	01 96       	adiw	r24, 0x01	; 1
+ 4bc:	90 93 6d 00 	sts	0x006D, r25
+ 4c0:	80 93 6c 00 	sts	0x006C, r24
+ 4c4:	9f 91       	pop	r25
+ 4c6:	8f 91       	pop	r24
+ 4c8:	0f 90       	pop	r0
+ 4ca:	0f be       	out	0x3f, r0	; 63
+ 4cc:	0f 90       	pop	r0
+ 4ce:	1f 90       	pop	r1
+ 4d0:	18 95       	reti
+
+000004d2 <Trigger_Ultrasonic_Sensor>:
+ 4d2:	c1 9a       	sbi	0x18, 1	; 24
+ 4d4:	83 e0       	ldi	r24, 0x03	; 3
+ 4d6:	8a 95       	dec	r24
+ 4d8:	f1 f7       	brne	.-4      	; 0x4d6 <Trigger_Ultrasonic_Sensor+0x4>
+ 4da:	00 00       	nop
+ 4dc:	c1 98       	cbi	0x18, 1	; 24
+ 4de:	08 95       	ret
+
+000004e0 <__vector_9>:
+ 4e0:	1f 92       	push	r1
+ 4e2:	0f 92       	push	r0
+ 4e4:	0f b6       	in	r0, 0x3f	; 63
+ 4e6:	0f 92       	push	r0
+ 4e8:	11 24       	eor	r1, r1
+ 4ea:	2f 93       	push	r18
+ 4ec:	3f 93       	push	r19
+ 4ee:	4f 93       	push	r20
+ 4f0:	5f 93       	push	r21
+ 4f2:	6f 93       	push	r22
+ 4f4:	7f 93       	push	r23
+ 4f6:	8f 93       	push	r24
+ 4f8:	9f 93       	push	r25
+ 4fa:	af 93       	push	r26
+ 4fc:	bf 93       	push	r27
+ 4fe:	ef 93       	push	r30
+ 500:	ff 93       	push	r31
+ 502:	80 91 66 00 	lds	r24, 0x0066
+ 506:	90 91 67 00 	lds	r25, 0x0067
+ 50a:	9c 01       	movw	r18, r24
+ 50c:	2f 5f       	subi	r18, 0xFF	; 255
+ 50e:	3f 4f       	sbci	r19, 0xFF	; 255
+ 510:	30 93 67 00 	sts	0x0067, r19
+ 514:	20 93 66 00 	sts	0x0066, r18
+ 518:	84 3f       	cpi	r24, 0xF4	; 244
+ 51a:	91 40       	sbci	r25, 0x01	; 1
+ 51c:	49 f4       	brne	.+18     	; 0x530 <__vector_9+0x50>
+ 51e:	d9 df       	rcall	.-78     	; 0x4d2 <Trigger_Ultrasonic_Sensor>
+ 520:	10 92 67 00 	sts	0x0067, r1
+ 524:	10 92 66 00 	sts	0x0066, r1
+ 528:	83 b7       	in	r24, 0x33	; 51
+ 52a:	8e 7f       	andi	r24, 0xFE	; 254
+ 52c:	83 bf       	out	0x33, r24	; 51
+ 52e:	12 be       	out	0x32, r1	; 50
+ 530:	ff 91       	pop	r31
+ 532:	ef 91       	pop	r30
+ 534:	bf 91       	pop	r27
+ 536:	af 91       	pop	r26
+ 538:	9f 91       	pop	r25
+ 53a:	8f 91       	pop	r24
+ 53c:	7f 91       	pop	r23
+ 53e:	6f 91       	pop	r22
+ 540:	5f 91       	pop	r21
+ 542:	4f 91       	pop	r20
+ 544:	3f 91       	pop	r19
+ 546:	2f 91       	pop	r18
+ 548:	0f 90       	pop	r0
+ 54a:	0f be       	out	0x3f, r0	; 63
+ 54c:	0f 90       	pop	r0
+ 54e:	1f 90       	pop	r1
+ 550:	18 95       	reti
+
+00000552 <Init_Pir>:
+ 552:	8b 98       	cbi	0x11, 3	; 17
+ 554:	93 9a       	sbi	0x12, 3	; 18
+ 556:	85 b7       	in	r24, 0x35	; 53
+ 558:	8c 60       	ori	r24, 0x0C	; 12
+ 55a:	85 bf       	out	0x35, r24	; 53
+ 55c:	8b b7       	in	r24, 0x3b	; 59
+ 55e:	80 68       	ori	r24, 0x80	; 128
+ 560:	8b bf       	out	0x3b, r24	; 59
+ 562:	08 95       	ret
+
+00000564 <Init_Ultrasonic_Sensor>:
+ 564:	b9 9a       	sbi	0x17, 1	; 23
+ 566:	c1 98       	cbi	0x18, 1	; 24
+ 568:	8a 98       	cbi	0x11, 2	; 17
+ 56a:	92 9a       	sbi	0x12, 2	; 18
+ 56c:	85 b7       	in	r24, 0x35	; 53
+ 56e:	83 60       	ori	r24, 0x03	; 3
+ 570:	85 bf       	out	0x35, r24	; 53
+ 572:	8b b7       	in	r24, 0x3b	; 59
+ 574:	80 64       	ori	r24, 0x40	; 64
+ 576:	8b bf       	out	0x3b, r24	; 59
+ 578:	08 95       	ret
+
+0000057a <Get_Uss_Count>:
+ 57a:	80 91 6a 00 	lds	r24, 0x006A
+ 57e:	90 91 6b 00 	lds	r25, 0x006B
+ 582:	08 95       	ret
+
+00000584 <Init_Timer0>:
+ 584:	89 b7       	in	r24, 0x39	; 57
+ 586:	81 60       	ori	r24, 0x01	; 1
+ 588:	89 bf       	out	0x39, r24	; 57
+ 58a:	83 b7       	in	r24, 0x33	; 51
+ 58c:	81 60       	ori	r24, 0x01	; 1
+ 58e:	83 bf       	out	0x33, r24	; 51
+ 590:	08 95       	ret
+
+00000592 <Init_Timer1>:
+ 592:	1d bc       	out	0x2d, r1	; 45
+ 594:	1c bc       	out	0x2c, r1	; 44
+ 596:	89 b7       	in	r24, 0x39	; 57
+ 598:	84 60       	ori	r24, 0x04	; 4
+ 59a:	89 bf       	out	0x39, r24	; 57
+ 59c:	08 95       	ret
+
+0000059e <Start_Timer1>:
+ 59e:	8e b5       	in	r24, 0x2e	; 46
+ 5a0:	81 60       	ori	r24, 0x01	; 1
+ 5a2:	8e bd       	out	0x2e, r24	; 46
+ 5a4:	08 95       	ret
+
+000005a6 <Stop_Timer1>:
+ 5a6:	8e b5       	in	r24, 0x2e	; 46
+ 5a8:	8e 7f       	andi	r24, 0xFE	; 254
+ 5aa:	8e bd       	out	0x2e, r24	; 46
+ 5ac:	08 95       	ret
+
+000005ae <__vector_1>:
+ 5ae:	1f 92       	push	r1
+ 5b0:	0f 92       	push	r0
+ 5b2:	0f b6       	in	r0, 0x3f	; 63
+ 5b4:	0f 92       	push	r0
+ 5b6:	11 24       	eor	r1, r1
+ 5b8:	2f 93       	push	r18
+ 5ba:	3f 93       	push	r19
+ 5bc:	4f 93       	push	r20
+ 5be:	5f 93       	push	r21
+ 5c0:	6f 93       	push	r22
+ 5c2:	7f 93       	push	r23
+ 5c4:	8f 93       	push	r24
+ 5c6:	9f 93       	push	r25
+ 5c8:	af 93       	push	r26
+ 5ca:	bf 93       	push	r27
+ 5cc:	ef 93       	push	r30
+ 5ce:	ff 93       	push	r31
+ 5d0:	80 91 65 00 	lds	r24, 0x0065
+ 5d4:	88 23       	and	r24, r24
+ 5d6:	49 f1       	breq	.+82     	; 0x62a <__vector_1+0x7c>
+ 5d8:	e6 df       	rcall	.-52     	; 0x5a6 <Stop_Timer1>
+ 5da:	8c b5       	in	r24, 0x2c	; 44
+ 5dc:	9d b5       	in	r25, 0x2d	; 45
+ 5de:	90 93 6b 00 	sts	0x006B, r25
+ 5e2:	80 93 6a 00 	sts	0x006A, r24
+ 5e6:	10 92 69 00 	sts	0x0069, r1
+ 5ea:	10 92 68 00 	sts	0x0068, r1
+ 5ee:	1d bc       	out	0x2d, r1	; 45
+ 5f0:	1c bc       	out	0x2c, r1	; 44
+ 5f2:	10 92 65 00 	sts	0x0065, r1
+ 5f6:	85 b7       	in	r24, 0x35	; 53
+ 5f8:	83 60       	ori	r24, 0x03	; 3
+ 5fa:	85 bf       	out	0x35, r24	; 53
+ 5fc:	83 b7       	in	r24, 0x33	; 51
+ 5fe:	81 60       	ori	r24, 0x01	; 1
+ 600:	83 bf       	out	0x33, r24	; 51
+ 602:	20 91 6a 00 	lds	r18, 0x006A
+ 606:	30 91 6b 00 	lds	r19, 0x006B
+ 60a:	80 91 62 00 	lds	r24, 0x0062
+ 60e:	90 91 63 00 	lds	r25, 0x0063
+ 612:	28 17       	cp	r18, r24
+ 614:	39 07       	cpc	r19, r25
+ 616:	98 f4       	brcc	.+38     	; 0x63e <__vector_1+0x90>
+ 618:	62 e0       	ldi	r22, 0x02	; 2
+ 61a:	81 e0       	ldi	r24, 0x01	; 1
+ 61c:	9c dd       	rcall	.-1224   	; 0x156 <DebugLedTransmit>
+ 61e:	80 91 84 00 	lds	r24, 0x0084
+ 622:	84 60       	ori	r24, 0x04	; 4
+ 624:	80 93 84 00 	sts	0x0084, r24
+ 628:	0a c0       	rjmp	.+20     	; 0x63e <__vector_1+0x90>
+ 62a:	b9 df       	rcall	.-142    	; 0x59e <Start_Timer1>
+ 62c:	81 e0       	ldi	r24, 0x01	; 1
+ 62e:	80 93 65 00 	sts	0x0065, r24
+ 632:	85 b7       	in	r24, 0x35	; 53
+ 634:	8e 7f       	andi	r24, 0xFE	; 254
+ 636:	85 bf       	out	0x35, r24	; 53
+ 638:	85 b7       	in	r24, 0x35	; 53
+ 63a:	82 60       	ori	r24, 0x02	; 2
+ 63c:	85 bf       	out	0x35, r24	; 53
+ 63e:	ff 91       	pop	r31
+ 640:	ef 91       	pop	r30
+ 642:	bf 91       	pop	r27
+ 644:	af 91       	pop	r26
+ 646:	9f 91       	pop	r25
+ 648:	8f 91       	pop	r24
+ 64a:	7f 91       	pop	r23
+ 64c:	6f 91       	pop	r22
+ 64e:	5f 91       	pop	r21
+ 650:	4f 91       	pop	r20
+ 652:	3f 91       	pop	r19
+ 654:	2f 91       	pop	r18
+ 656:	0f 90       	pop	r0
+ 658:	0f be       	out	0x3f, r0	; 63
+ 65a:	0f 90       	pop	r0
+ 65c:	1f 90       	pop	r1
+ 65e:	18 95       	reti
+
+00000660 <Get_Pir_count>:
+ 660:	80 91 6c 00 	lds	r24, 0x006C
+ 664:	90 91 6d 00 	lds	r25, 0x006D
+ 668:	08 95       	ret
+
+0000066a <Reset_Pir_count>:
+ 66a:	10 92 6d 00 	sts	0x006D, r1
+ 66e:	10 92 6c 00 	sts	0x006C, r1
+ 672:	08 95       	ret
+
+00000674 <Init_Gpio>:
+ 674:	b8 9a       	sbi	0x17, 0	; 23
+ 676:	c0 98       	cbi	0x18, 0	; 24
+ 678:	08 95       	ret
+
+0000067a <__udivmodhi4>:
+ 67a:	aa 1b       	sub	r26, r26
+ 67c:	bb 1b       	sub	r27, r27
+ 67e:	51 e1       	ldi	r21, 0x11	; 17
+ 680:	07 c0       	rjmp	.+14     	; 0x690 <__udivmodhi4_ep>
+
+00000682 <__udivmodhi4_loop>:
+ 682:	aa 1f       	adc	r26, r26
+ 684:	bb 1f       	adc	r27, r27
+ 686:	a6 17       	cp	r26, r22
+ 688:	b7 07       	cpc	r27, r23
+ 68a:	10 f0       	brcs	.+4      	; 0x690 <__udivmodhi4_ep>
+ 68c:	a6 1b       	sub	r26, r22
+ 68e:	b7 0b       	sbc	r27, r23
+
+00000690 <__udivmodhi4_ep>:
+ 690:	88 1f       	adc	r24, r24
+ 692:	99 1f       	adc	r25, r25
+ 694:	5a 95       	dec	r21
+ 696:	a9 f7       	brne	.-22     	; 0x682 <__udivmodhi4_loop>
+ 698:	80 95       	com	r24
+ 69a:	90 95       	com	r25
+ 69c:	bc 01       	movw	r22, r24
+ 69e:	cd 01       	movw	r24, r26
+ 6a0:	08 95       	ret
+
+000006a2 <__divmodhi4>:
+ 6a2:	97 fb       	bst	r25, 7
+ 6a4:	07 2e       	mov	r0, r23
+ 6a6:	16 f4       	brtc	.+4      	; 0x6ac <__divmodhi4+0xa>
+ 6a8:	00 94       	com	r0
+ 6aa:	06 d0       	rcall	.+12     	; 0x6b8 <__divmodhi4_neg1>
+ 6ac:	77 fd       	sbrc	r23, 7
+ 6ae:	08 d0       	rcall	.+16     	; 0x6c0 <__divmodhi4_neg2>
+ 6b0:	e4 df       	rcall	.-56     	; 0x67a <__udivmodhi4>
+ 6b2:	07 fc       	sbrc	r0, 7
+ 6b4:	05 d0       	rcall	.+10     	; 0x6c0 <__divmodhi4_neg2>
+ 6b6:	3e f4       	brtc	.+14     	; 0x6c6 <__divmodhi4_exit>
+
+000006b8 <__divmodhi4_neg1>:
+ 6b8:	90 95       	com	r25
+ 6ba:	81 95       	neg	r24
+ 6bc:	9f 4f       	sbci	r25, 0xFF	; 255
+ 6be:	08 95       	ret
+
+000006c0 <__divmodhi4_neg2>:
+ 6c0:	70 95       	com	r23
+ 6c2:	61 95       	neg	r22
+ 6c4:	7f 4f       	sbci	r23, 0xFF	; 255
+
+000006c6 <__divmodhi4_exit>:
+ 6c6:	08 95       	ret
+
+000006c8 <_exit>:
+ 6c8:	f8 94       	cli
+
+000006ca <__stop_program>:
+ 6ca:	ff cf       	rjmp	.-2      	; 0x6ca <__stop_program>

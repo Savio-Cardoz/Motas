@@ -10,6 +10,7 @@
 #include "Atmega_Config.h"
 #include "Peripheral_Drivers.h"
 #include "debug_func.h"
+#include "Atmega_Uart.h"
 
 void Atmega_init()
 {

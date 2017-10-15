@@ -11,6 +11,7 @@
 #include "Peripheral_Drivers.h"
 #include "Motas_Controller.h"
 #include "debug_func.h"
+#include "Atmega_Uart.h"
 
 static volatile uint16_t pir_trigger_count, UssPulseCount;
 static volatile uint16_t timer1_ovf_count = 0;

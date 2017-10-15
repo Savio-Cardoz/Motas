@@ -25,9 +25,9 @@ typedef struct			// Using to access individual bits/pins of a register/port
 	unsigned int bit5:1;
 	unsigned int bit6:1;
 	unsigned int bit7:1;
-} _io_reg;
+} reg;
 
-#define REGISTER_BIT(rg,bt) ((volatile _io_reg*)&rg)->bit##bt
+#define REGISTER_BIT(rg,bt) ((volatile reg*)&rg)->bit##bt
 
 void Atmega_init();
 

@@ -35,6 +35,7 @@ uint8_t USART_ReceiveByte();
 void USART_Transmit_dec(unsigned int int_data);
 int Ring_Add(char c);
 int Ring_Remove(void);
+uint8_t Is_Buffer_Empty();
 
 
 

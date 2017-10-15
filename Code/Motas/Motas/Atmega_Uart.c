@@ -14,7 +14,7 @@ ISR(USART_RXC_vect)		// USART interrupt service routine.
 	uint8_t err;
 	err = Ring_Add(UDR);
 
-	if (err = -1)
+	if (err == -1)
 	{
 		/* Error Handling code here. We may need to think if we need error handling for this */
 	}

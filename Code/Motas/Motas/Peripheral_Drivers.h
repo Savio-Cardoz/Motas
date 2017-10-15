@@ -55,5 +55,7 @@ void Led_Off(uint8_t led_color);
 void Init_Gpio();
 void Stop_Timer1();
 void Start_Timer1();
+void Init_Timer1();
+void Init_Timer0();
 
 #endif /* PERIPHERAL_DRIVERS_H_ */
